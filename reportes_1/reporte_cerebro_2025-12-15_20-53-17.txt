@@ -1,0 +1,6 @@
+╔═════════════════════════════════════════╗
+║   REPORTE DE SESIÓN - EL CEREBRO        ║
+╚═════════════════════════════════════════╝
+
+[20:52:44] Consulta de usuarios conectados:
+Usuario             N/A            2025-12-15 16:59:34

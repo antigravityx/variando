@@ -1,0 +1,16 @@
+--- PRESUPUESTO: CARTEL AGUILA SR MARTA ESTER ---
+
+A) Desglose de Fabricación:
+  - lona                 $ 3.400,00
+  - hierro               $ 4.500,00
+  - pintura              $ 2.000,00
+  -----------------------------------
+  Costo de Fabricación:  $ 9.900,00
+
+B) Resumen Financiero:
+  - Subtotal Producto (Fabricación + Ganancia):   $ 29.700,00
+    (Ganancia del 200.0%: $ 19.800,00)
+  - Costo de Instalación:                         $ 15.000,00
+------------------------------------------------------------
+  PRESUPUESTO FINAL PARA EL CLIENTE:            $ 44.700,00
+                                                (cuarenta y cuatro mil setecientos con cero centavos)

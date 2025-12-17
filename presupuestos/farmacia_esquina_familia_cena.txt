@@ -1,0 +1,17 @@
+--- PRESUPUESTO: FARMACIA ESQUINA FAMILIA CENA ---
+
+A) Desglose de Fabricación:
+  - lona                 $ 45.000,00
+  - hierro               $ 65.000,00
+  - pintura              $ 30.000,00
+  - luces                $ 36.000,00
+  -----------------------------------
+  Costo de Fabricación:  $ 176.000,00
+
+B) Resumen Financiero:
+  - Subtotal Producto (Fabricación + Ganancia):   $ 528.000,00
+    (Ganancia del 200.0%: $ 352.000,00)
+  - Costo de Instalación:                         $ 35.000,00
+------------------------------------------------------------
+  PRESUPUESTO FINAL PARA EL CLIENTE:            $ 563.000,00
+                                                (quinientos sesenta y tres mil con cero centavos)

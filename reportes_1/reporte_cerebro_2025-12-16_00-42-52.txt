@@ -1,0 +1,5 @@
+╔═════════════════════════════════════════╗
+║   REPORTE DE SESIÓN - EL CEREBRO        ║
+╚═════════════════════════════════════════╝
+
+[00:41:57] Análisis WiFi completado. Se encontraron 0 redes.

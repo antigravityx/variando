@@ -1,0 +1,19 @@
+╔═════════════════════════════════════════╗
+║   REPORTE DE SESIÓN - EL CEREBRO        ║
+╚═════════════════════════════════════════╝
+
+[22:19:51] Iniciada herramienta de Ping.
+Ping a google.com:
+
+Haciendo ping a google.com [142.251.129.46] con 32 bytes de datos:
+Respuesta desde 142.251.129.46: bytes=32 tiempo=25ms TTL=116
+Respuesta desde 142.251.129.46: bytes=32 tiempo=26ms TTL=116
+Respuesta desde 142.251.129.46: bytes=32 tiempo=24ms TTL=116
+Respuesta desde 142.251.129.46: bytes=32 tiempo=22ms TTL=116
+
+Estad¡sticas de ping para 142.251.129.46:
+    Paquetes: enviados = 4, recibidos = 4, perdidos = 0
+    (0% perdidos),
+Tiempos aproximados de ida y vuelta en milisegundos:
+    M¡nimo = 22ms, M ximo = 26ms, Media = 24ms
+

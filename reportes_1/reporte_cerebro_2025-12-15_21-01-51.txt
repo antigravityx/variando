@@ -1,0 +1,97 @@
+╔═════════════════════════════════════════╗
+║   REPORTE DE SESIÓN - EL CEREBRO        ║
+╚═════════════════════════════════════════╝
+
+[20:57:36] Consulta de puertos abiertos:
+9168      Antigravity.exe             0.0.0.0:60873
+11564     Antigravity.exe             :::62037
+6140      Antigravity.exe             127.0.0.1:60897
+11564     Antigravity.exe             0.0.0.0:62037
+9168      Antigravity.exe             :::60873
+9168      Antigravity.exe             0.0.0.0:9101
+6140      Antigravity.exe             127.0.0.1:60970
+6140      Antigravity.exe             127.0.0.1:60923
+9168      Antigravity.exe             :::9101
+9872      language_server_windows_x64.exe127.0.0.1:60899
+9872      language_server_windows_x64.exe127.0.0.1:60898
+9872      language_server_windows_x64.exe127.0.0.1:60904
+976       lsass.exe                   0.0.0.0:49664
+976       lsass.exe                   :::49664
+8320      NVIDIA Web Helper.exe       127.0.0.1:57672
+6996      SAiLicService.exe           127.0.0.1:58104
+3980      SAiLicSvr.exe               0.0.0.0:49669
+948       services.exe                :::49670
+948       services.exe                0.0.0.0:49670
+4000      sntlkeyssrvr.exe            0.0.0.0:7002
+4000      sntlkeyssrvr.exe            0.0.0.0:7001
+3488      spoolsv.exe                 0.0.0.0:49668
+3488      spoolsv.exe                 :::49668
+7576      svchost.exe                 0.0.0.0:5040
+1472      svchost.exe                 :::49667
+3228      svchost.exe                 :::7680
+3228      svchost.exe                 0.0.0.0:7680
+1472      svchost.exe                 0.0.0.0:49667
+992       svchost.exe                 :::135
+1416      svchost.exe                 :::49666
+992       svchost.exe                 0.0.0.0:135
+1416      svchost.exe                 0.0.0.0:49666
+4         System                      0.0.0.0:5357
+4         System                      :::5357
+4         System                      :::445
+4         System                      172.20.192.1:139
+4         System                      0.0.0.0:445
+4         System                      192.168.0.54:139
+4         System                      192.168.56.1:139
+1872      vmms.exe                    :::2179
+1872      vmms.exe                    0.0.0.0:2179
+868       wininit.exe                 :::49665
+868       wininit.exe                 0.0.0.0:49665
+
+[20:57:55] Visualizado el reporte: reporte_cerebro_2025-12-15_20-56-31.txt
+[20:58:30] Consulta de puertos abiertos:
+9168      Antigravity.exe             0.0.0.0:60873
+11564     Antigravity.exe             :::62037
+6140      Antigravity.exe             127.0.0.1:60897
+11564     Antigravity.exe             0.0.0.0:62037
+9168      Antigravity.exe             :::60873
+9168      Antigravity.exe             0.0.0.0:9101
+6140      Antigravity.exe             127.0.0.1:60970
+6140      Antigravity.exe             127.0.0.1:60923
+9168      Antigravity.exe             :::9101
+9872      language_server_windows_x64.exe127.0.0.1:60899
+9872      language_server_windows_x64.exe127.0.0.1:60898
+9872      language_server_windows_x64.exe127.0.0.1:60904
+976       lsass.exe                   0.0.0.0:49664
+976       lsass.exe                   :::49664
+8320      NVIDIA Web Helper.exe       127.0.0.1:57672
+6996      SAiLicService.exe           127.0.0.1:58104
+3980      SAiLicSvr.exe               0.0.0.0:49669
+948       services.exe                :::49670
+948       services.exe                0.0.0.0:49670
+4000      sntlkeyssrvr.exe            0.0.0.0:7002
+4000      sntlkeyssrvr.exe            0.0.0.0:7001
+3488      spoolsv.exe                 0.0.0.0:49668
+3488      spoolsv.exe                 :::49668
+7576      svchost.exe                 0.0.0.0:5040
+1472      svchost.exe                 :::49667
+3228      svchost.exe                 :::7680
+3228      svchost.exe                 0.0.0.0:7680
+1472      svchost.exe                 0.0.0.0:49667
+992       svchost.exe                 :::135
+1416      svchost.exe                 :::49666
+992       svchost.exe                 0.0.0.0:135
+1416      svchost.exe                 0.0.0.0:49666
+4         System                      0.0.0.0:5357
+4         System                      :::5357
+4         System                      :::445
+4         System                      172.20.192.1:139
+4         System                      0.0.0.0:445
+4         System                      192.168.0.54:139
+4         System                      192.168.56.1:139
+1872      vmms.exe                    :::2179
+1872      vmms.exe                    0.0.0.0:2179
+868       wininit.exe                 :::49665
+868       wininit.exe                 0.0.0.0:49665
+
+[21:01:47] Consulta de usuarios conectados:
+Usuario             N/A            2025-12-15 16:59:34      

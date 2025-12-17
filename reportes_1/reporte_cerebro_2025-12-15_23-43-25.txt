@@ -1,0 +1,21 @@
+╔═════════════════════════════════════════╗
+║   REPORTE DE SESIÓN - EL CEREBRO        ║
+╚═════════════════════════════════════════╝
+
+[23:43:22] Iniciada herramienta de Traceroute.
+Traceroute a freepik.com:
+
+Traza a la direcci¢n freepik.com [34.160.205.140]
+sobre un m ximo de 30 saltos:
+
+  1     1 ms     1 ms     1 ms  192.168.0.1 
+  2     *        *        *     Tiempo de espera agotado para esta solicitud.
+  3     *        *        *     Tiempo de espera agotado para esta solicitud.
+  4    27 ms    26 ms    22 ms  host222.181-88-68.telecom.net.ar [181.88.68.222] 
+  5     *        *        *     Tiempo de espera agotado para esta solicitud.
+  6    25 ms    25 ms    24 ms  host234.181-96-113.telecom.net.ar [181.96.113.234] 
+  7    21 ms     *        *     72.14.194.198 
+  8    27 ms    25 ms    21 ms  140.205.160.34.bc.googleusercontent.com [34.160.205.140] 
+
+Traza completa.
+

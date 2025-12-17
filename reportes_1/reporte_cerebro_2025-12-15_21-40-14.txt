@@ -1,0 +1,8 @@
+╔═════════════════════════════════════════╗
+║   REPORTE DE SESIÓN - EL CEREBRO        ║
+╚═════════════════════════════════════════╝
+
+[21:40:04] Consulta de usuarios conectados:
+Usuario             N/A            2025-12-15 16:59:34      
+Consulta de detalles para PID 6476: Nombre=vivaldi.exe, Usuario=DESKTOP-F75OTRT\Usuario, CPU=0.00%, Mem=634.54MB
+  └─ ACCIÓN: KillTrueno ejecutado sobre 6476 (vivaldi.exe).

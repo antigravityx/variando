@@ -1,0 +1,21 @@
+{
+    "project_title": "cartel magico kiosko Sr pepito",
+    "items_costo": [
+        {
+            "nombre": "lona",
+            "costo": 36000.0
+        },
+        {
+            "nombre": "hierro",
+            "costo": 40000.0
+        },
+        {
+            "nombre": "tornillo",
+            "costo": 20000.0
+        }
+    ],
+    "margen_ganancia_pct": 100.0,
+    "costo_instalacion": 20000.0,
+    "base": 300.0,
+    "altura": 500.0
+}

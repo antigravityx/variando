@@ -1,0 +1,245 @@
+╔═════════════════════════════════════════╗
+║   REPORTE CONSOLIDADO - EL CEREBRO      ║
+╚═════════════════════════════════════════╝
+
+
+═══════════ SESIÓN GUARDADA EL 2025-12-16 a las 19:47:25 ═══════════
+[19:45:12] Uso de CPU actual: 6.6%
+[19:45:19] Uso de RAM actual: 54.0% ([1m8.60[0m GB / [1m15.93[0m GB)
+[19:45:43] Visualizado el reporte: reporte_cerebro_2025-12-15_20-16-01.txt
+[19:47:21] Consulta de puertos abiertos:
+9572      Antigravity.exe             0.0.0.0:9101
+11040     Antigravity.exe             :::58996
+11040     Antigravity.exe             0.0.0.0:58996
+6676      Antigravity.exe             127.0.0.1:58878
+9572      Antigravity.exe             :::58822
+9572      Antigravity.exe             0.0.0.0:58822
+6676      Antigravity.exe             127.0.0.1:58845
+6676      Antigravity.exe             127.0.0.1:58856
+9572      Antigravity.exe             :::9101
+8420      figma_agent.exe             127.0.0.1:44950
+8420      figma_agent.exe             127.0.0.1:44960
+6304      language_server_windows_x64.exe127.0.0.1:58848
+6304      language_server_windows_x64.exe127.0.0.1:58849
+6304      language_server_windows_x64.exe127.0.0.1:58854
+620       lsass.exe                   0.0.0.0:49664
+620       lsass.exe                   :::49664
+2304      NVIDIA Web Helper.exe       127.0.0.1:58352
+8328      SAiLicService.exe           127.0.0.1:59188
+3848      SAiLicSvr.exe               0.0.0.0:49669
+528       services.exe                0.0.0.0:49670
+528       services.exe                :::49670
+3888      sntlkeyssrvr.exe            0.0.0.0:7002
+3888      sntlkeyssrvr.exe            0.0.0.0:7001
+3208      spoolsv.exe                 0.0.0.0:49668
+3208      spoolsv.exe                 :::49668
+6520      svchost.exe                 0.0.0.0:5040
+1608      svchost.exe                 :::49667
+1048      svchost.exe                 0.0.0.0:135
+1496      svchost.exe                 :::49666
+1496      svchost.exe                 0.0.0.0:49666
+1608      svchost.exe                 0.0.0.0:49667
+1048      svchost.exe                 :::135
+4         System                      192.168.56.1:139
+4         System                      0.0.0.0:445
+4         System                      :::445
+4         System                      192.168.0.54:139
+4         System                      172.20.192.1:139
+4         System                      0.0.0.0:5357
+4         System                      :::5357
+1704      vmms.exe                    0.0.0.0:2179
+1704      vmms.exe                    :::2179
+916       wininit.exe                 0.0.0.0:49665
+916       wininit.exe                 :::49665
+
+Consulta de detalles para PID 8420: Nombre=figma_agent.exe, Usuario=DESKTOP-F75OTRT\Usuario, CPU=0.00%, Mem=14.72MB
+  └─ ACCIÓN: KillTrueno ejecutado sobre 8420 (figma_agent.exe).
+
+
+═══════════ SESIÓN GUARDADA EL 2025-12-16 a las 19:49:21 ═══════════
+[19:45:12] Uso de CPU actual: 6.6%
+[19:45:19] Uso de RAM actual: 54.0% ([1m8.60[0m GB / [1m15.93[0m GB)
+[19:45:43] Visualizado el reporte: reporte_cerebro_2025-12-15_20-16-01.txt
+[19:47:21] Consulta de puertos abiertos:
+9572      Antigravity.exe             0.0.0.0:9101
+11040     Antigravity.exe             :::58996
+11040     Antigravity.exe             0.0.0.0:58996
+6676      Antigravity.exe             127.0.0.1:58878
+9572      Antigravity.exe             :::58822
+9572      Antigravity.exe             0.0.0.0:58822
+6676      Antigravity.exe             127.0.0.1:58845
+6676      Antigravity.exe             127.0.0.1:58856
+9572      Antigravity.exe             :::9101
+8420      figma_agent.exe             127.0.0.1:44950
+8420      figma_agent.exe             127.0.0.1:44960
+6304      language_server_windows_x64.exe127.0.0.1:58848
+6304      language_server_windows_x64.exe127.0.0.1:58849
+6304      language_server_windows_x64.exe127.0.0.1:58854
+620       lsass.exe                   0.0.0.0:49664
+620       lsass.exe                   :::49664
+2304      NVIDIA Web Helper.exe       127.0.0.1:58352
+8328      SAiLicService.exe           127.0.0.1:59188
+3848      SAiLicSvr.exe               0.0.0.0:49669
+528       services.exe                0.0.0.0:49670
+528       services.exe                :::49670
+3888      sntlkeyssrvr.exe            0.0.0.0:7002
+3888      sntlkeyssrvr.exe            0.0.0.0:7001
+3208      spoolsv.exe                 0.0.0.0:49668
+3208      spoolsv.exe                 :::49668
+6520      svchost.exe                 0.0.0.0:5040
+1608      svchost.exe                 :::49667
+1048      svchost.exe                 0.0.0.0:135
+1496      svchost.exe                 :::49666
+1496      svchost.exe                 0.0.0.0:49666
+1608      svchost.exe                 0.0.0.0:49667
+1048      svchost.exe                 :::135
+4         System                      192.168.56.1:139
+4         System                      0.0.0.0:445
+4         System                      :::445
+4         System                      192.168.0.54:139
+4         System                      172.20.192.1:139
+4         System                      0.0.0.0:5357
+4         System                      :::5357
+1704      vmms.exe                    0.0.0.0:2179
+1704      vmms.exe                    :::2179
+916       wininit.exe                 0.0.0.0:49665
+916       wininit.exe                 :::49665
+
+Consulta de detalles para PID 8420: Nombre=figma_agent.exe, Usuario=DESKTOP-F75OTRT\Usuario, CPU=0.00%, Mem=14.72MB
+  └─ ACCIÓN: KillTrueno ejecutado sobre 8420 (figma_agent.exe).
+[19:48:03] Consulta de puertos abiertos:
+9572      Antigravity.exe             0.0.0.0:9101
+11040     Antigravity.exe             :::58996
+11040     Antigravity.exe             0.0.0.0:58996
+6676      Antigravity.exe             127.0.0.1:58878
+9572      Antigravity.exe             :::58822
+9572      Antigravity.exe             0.0.0.0:58822
+6676      Antigravity.exe             127.0.0.1:58845
+6676      Antigravity.exe             127.0.0.1:58856
+9572      Antigravity.exe             :::9101
+6304      language_server_windows_x64.exe127.0.0.1:58848
+6304      language_server_windows_x64.exe127.0.0.1:58849
+6304      language_server_windows_x64.exe127.0.0.1:58854
+620       lsass.exe                   0.0.0.0:49664
+620       lsass.exe                   :::49664
+2304      NVIDIA Web Helper.exe       127.0.0.1:58352
+8328      SAiLicService.exe           127.0.0.1:59188
+3848      SAiLicSvr.exe               0.0.0.0:49669
+528       services.exe                0.0.0.0:49670
+528       services.exe                :::49670
+3888      sntlkeyssrvr.exe            0.0.0.0:7002
+3888      sntlkeyssrvr.exe            0.0.0.0:7001
+3208      spoolsv.exe                 0.0.0.0:49668
+3208      spoolsv.exe                 :::49668
+6520      svchost.exe                 0.0.0.0:5040
+1608      svchost.exe                 :::49667
+1048      svchost.exe                 0.0.0.0:135
+1496      svchost.exe                 :::49666
+1496      svchost.exe                 0.0.0.0:49666
+1608      svchost.exe                 0.0.0.0:49667
+1048      svchost.exe                 :::135
+4         System                      192.168.56.1:139
+4         System                      0.0.0.0:445
+4         System                      :::445
+4         System                      192.168.0.54:139
+4         System                      172.20.192.1:139
+4         System                      0.0.0.0:5357
+4         System                      :::5357
+1704      vmms.exe                    0.0.0.0:2179
+1704      vmms.exe                    :::2179
+916       wininit.exe                 0.0.0.0:49665
+916       wininit.exe                 :::49665
+
+[19:49:16] Consulta de usuarios conectados:
+Usuario             N/A            2025-12-16 16:34:22      
+
+
+═══════════ SESIÓN GUARDADA EL 2025-12-16 a las 19:56:47 ═══════════
+[19:55:44] Consulta de usuarios conectados:
+Usuario             N/A            2025-12-16 16:34:22      
+[19:56:42] Se listaron 523 programas instalados.
+
+
+═══════════ SESIÓN GUARDADA EL 2025-12-16 a las 19:56:56 ═══════════
+[19:55:44] Consulta de usuarios conectados:
+Usuario             N/A            2025-12-16 16:34:22      
+[19:56:42] Se listaron 523 programas instalados.
+
+
+═══════════ SESIÓN GUARDADA EL 2025-12-16 a las 19:58:51 ═══════════
+[19:58:00] Consulta de usuarios conectados:
+Usuario             N/A            2025-12-16 16:34:22      
+[19:58:49] Análisis de procesos en ejecución:
+
+
+═══════════ SESIÓN GUARDADA EL 2025-12-16 a las 19:59:44 ═══════════
+[19:58:00] Consulta de usuarios conectados:
+Usuario             N/A            2025-12-16 16:34:22      
+[19:58:49] Análisis de procesos en ejecución:
+[19:59:40] Ejecución cancelada por el usuario.
+
+
+═══════════ SESIÓN GUARDADA EL 2025-12-16 a las 20:01:23 ═══════════
+[19:58:00] Consulta de usuarios conectados:
+Usuario             N/A            2025-12-16 16:34:22      
+[19:58:49] Análisis de procesos en ejecución:
+[19:59:40] Ejecución cancelada por el usuario.
+[20:01:00] Iniciada herramienta de búsqueda de cámaras.
+
+
+═══════════ SESIÓN GUARDADA EL 2025-12-16 a las 20:23:32 ═══════════
+[20:23:26] Iniciado Cerebro Numérico.
+  └─ Iniciada Calculadora de Presupuestos.
+  └─ Cálculo de costo: 20000.00m² -> 60000000.00$
+
+
+═══════════ SESIÓN GUARDADA EL 2025-12-16 a las 20:33:08 ═══════════
+[20:33:06] Iniciado Cerebro Numérico.
+  └─ Iniciada Calculadora de Presupuestos.
+  └─ Cálculo de costo: 16.65m² -> $56.610,00
+
+
+═══════════ SESIÓN GUARDADA EL 2025-12-16 a las 20:33:15 ═══════════
+[20:33:06] Iniciado Cerebro Numérico.
+  └─ Iniciada Calculadora de Presupuestos.
+  └─ Cálculo de costo: 16.65m² -> $56.610,00
+
+
+═══════════ SESIÓN GUARDADA EL 2025-12-16 a las 20:51:26 ═══════════
+[20:51:24] Iniciado Cerebro Numérico.
+  └─ Iniciada Calculadora de Proyectos Detallada.
+  └─ Presupuesto Detallado: $415.400,00
+
+
+═══════════ SESIÓN GUARDADA EL 2025-12-16 a las 20:51:32 ═══════════
+[20:51:24] Iniciado Cerebro Numérico.
+  └─ Iniciada Calculadora de Proyectos Detallada.
+  └─ Presupuesto Detallado: $415.400,00
+
+
+═══════════ SESIÓN GUARDADA EL 2025-12-16 a las 20:57:10 ═══════════
+[20:57:06] Iniciado Cerebro Numérico.
+  └─ Iniciada Calculadora de Proyectos Detallada.
+  └─ Presupuesto Detallado: $40.500,00
+
+
+═══════════ SESIÓN GUARDADA EL 2025-12-16 a las 20:59:29 ═══════════
+[20:57:06] Iniciado Cerebro Numérico.
+  └─ Iniciada Calculadora de Proyectos Detallada.
+  └─ Presupuesto Detallado: $40.500,00
+[20:59:27] Iniciado Visor de Presupuestos (Ojo de Halcón).
+
+
+═══════════ SESIÓN GUARDADA EL 2025-12-16 a las 21:46:39 ═══════════
+[21:46:34] Iniciado Cerebro Numérico.
+  └─ Iniciada Calculadora de Proyectos Detallada.
+  └─ Presupuesto Detallado: $279.200,00
+
+
+═══════════ SESIÓN GUARDADA EL 2025-12-16 a las 22:18:39 ═══════════
+[22:18:35] Iniciado Visor de Presupuestos (Ojo de Halcón).
+
+
+═══════════ SESIÓN GUARDADA EL 2025-12-16 a las 22:20:24 ═══════════
+[22:18:35] Iniciado Visor de Presupuestos (Ojo de Halcón).
+[22:19:36] Iniciado Cerebro Numérico.

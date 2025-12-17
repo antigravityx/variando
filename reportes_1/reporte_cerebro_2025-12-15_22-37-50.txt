@@ -1,0 +1,23 @@
+╔═════════════════════════════════════════╗
+║   REPORTE DE SESIÓN - EL CEREBRO        ║
+╚═════════════════════════════════════════╝
+
+[22:34:28] Iniciada herramienta de Traceroute.
+Traceroute a google.com:
+
+Traza a la direcci¢n google.com [142.251.129.46]
+sobre un m ximo de 30 saltos:
+
+  1     1 ms     2 ms     1 ms  192.168.0.1 
+  2     *        *        *     Tiempo de espera agotado para esta solicitud.
+  3     *        *        *     Tiempo de espera agotado para esta solicitud.
+  4    24 ms    26 ms    24 ms  host222.181-88-68.telecom.net.ar [181.88.68.222] 
+  5     *        *        *     Tiempo de espera agotado para esta solicitud.
+  6    25 ms     *       25 ms  host234.181-96-113.telecom.net.ar [181.96.113.234] 
+  7    24 ms     *       23 ms  72.14.194.198 
+  8    22 ms    23 ms    22 ms  108.170.255.29 
+  9    24 ms    24 ms    23 ms  142.251.239.155 
+ 10    23 ms    24 ms    23 ms  tzezea-ad-in-f14.1e100.net [142.251.129.46] 
+
+Traza completa.
+

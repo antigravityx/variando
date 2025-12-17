@@ -1,0 +1,17 @@
+--- PRESUPUESTO: CARTEL LUMINOSO SIMPLE FAZ KIOSCO SR JUAN JOSE MARTINES ---
+
+A) Desglose de Fabricación:
+  - lona                 $ 50.000,00
+  - hierro               $ 35.000,00
+  - pintura              $ 20.000,00
+  - luces                $ 46.000,00
+  -----------------------------------
+  Costo de Fabricación:  $ 151.000,00
+
+B) Resumen Financiero:
+  - Subtotal Producto (Fabricación + Ganancia):   $ 453.000,00
+    (Ganancia del 200.0%: $ 302.000,00)
+  - Costo de Instalación:                         $ 30.000,00
+------------------------------------------------------------
+  PRESUPUESTO FINAL PARA EL CLIENTE:            $ 483.000,00
+                                                (cuatrocientos ochenta y tres mil con cero centavos)

@@ -1,0 +1,51 @@
+╔═════════════════════════════════════════╗
+║   REPORTE DE SESIÓN - EL CEREBRO        ║
+╚═════════════════════════════════════════╝
+
+[20:15:40] Visualizado el reporte: reporte_cerebro_2025-12-15_20-12-33.txt
+[20:15:54] Consulta de puertos abiertos:
+9168      Antigravity.exe          :::9101
+6996      SAiLicService.exe        127.0.0.1:58104
+4         System                   :::445
+4         System                   :::5357
+976       lsass.exe                0.0.0.0:49664
+1872      vmms.exe                 :::2179
+9168      Antigravity.exe          0.0.0.0:9101
+8768      figma_agent.exe          127.0.0.1:44960
+8320      NVIDIA Web Helper.exe    127.0.0.1:57672
+976       lsass.exe                :::49664
+1472      svchost.exe              :::49667
+1416      svchost.exe              :::49666
+4         System                   192.168.56.1:139
+4000      sntlkeyssrvr.exe         0.0.0.0:7001
+6140      Antigravity.exe          127.0.0.1:60923
+992       svchost.exe              0.0.0.0:135
+10616     Antigravity.exe          0.0.0.0:60953
+9872      language_server_windows_x64.exe127.0.0.1:60898
+8768      figma_agent.exe          127.0.0.1:44950
+4         System                   0.0.0.0:445
+3228      svchost.exe              :::7680
+3980      SAiLicSvr.exe            0.0.0.0:49669
+868       wininit.exe              :::49665
+10616     Antigravity.exe          :::60953
+9872      language_server_windows_x64.exe127.0.0.1:60899
+1872      vmms.exe                 0.0.0.0:2179
+4         System                   0.0.0.0:5357
+9872      language_server_windows_x64.exe127.0.0.1:60904
+992       svchost.exe              :::135
+948       services.exe             :::49670
+9168      Antigravity.exe          :::60873
+1416      svchost.exe              0.0.0.0:49666
+3488      spoolsv.exe              0.0.0.0:49668
+7576      svchost.exe              0.0.0.0:5040
+3488      spoolsv.exe              :::49668
+948       services.exe             0.0.0.0:49670
+4000      sntlkeyssrvr.exe         0.0.0.0:7002
+4         System                   172.20.192.1:139
+3228      svchost.exe              0.0.0.0:7680
+4         System                   192.168.0.54:139
+1472      svchost.exe              0.0.0.0:49667
+868       wininit.exe              0.0.0.0:49665
+6140      Antigravity.exe          127.0.0.1:60970
+9168      Antigravity.exe          0.0.0.0:60873
+6140      Antigravity.exe          127.0.0.1:60897

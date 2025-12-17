@@ -1,0 +1,5 @@
+╔═════════════════════════════════════════╗
+║   REPORTE DE SESIÓN - EL CEREBRO        ║
+╚═════════════════════════════════════════╝
+
+[21:58:02] Ejecutado 'Vivaldi' desde 'C:\Users\Usuario\AppData\Local\Vivaldi\Application\vivaldi.exe'.

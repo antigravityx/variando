@@ -1,0 +1,8 @@
+╔═════════════════════════════════════════╗
+║   REPORTE DE SESIÓN - EL CEREBRO        ║
+╚═════════════════════════════════════════╝
+
+[22:09:23] Iniciado Modo Espía.
+  └─ Espiada la ventana '(32) POP SMOKE - SWEETHEART ft. Fivio Foreign (Official Lyric Video) - YouTube - Vivaldi'.
+[22:10:33] Iniciado Modo Espía.
+  └─ Espiada la ventana 'variando - Antigravity - variando.py'.

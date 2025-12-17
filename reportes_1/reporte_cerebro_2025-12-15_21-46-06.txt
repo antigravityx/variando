@@ -1,0 +1,6 @@
+╔═════════════════════════════════════════╗
+║   REPORTE DE SESIÓN - EL CEREBRO        ║
+╚═════════════════════════════════════════╝
+
+[21:44:38] Análisis de procesos en ejecución:
+[21:45:03] Apocalipsis ejecutado sobre el nombre de proceso 'vivaldi.exe'.

@@ -1,0 +1,17 @@
+╔═════════════════════════════════════════╗
+║   REPORTE DE SESIÓN - EL CEREBRO        ║
+╚═════════════════════════════════════════╝
+
+[22:26:07] Iniciada herramienta de Ping.
+Ping a google.com con 4096 bytes:
+
+Haciendo ping a google.com [142.251.129.14] con 4096 bytes de datos:
+Tiempo de espera agotado para esta solicitud.
+Tiempo de espera agotado para esta solicitud.
+Tiempo de espera agotado para esta solicitud.
+Tiempo de espera agotado para esta solicitud.
+
+Estad¡sticas de ping para 142.251.129.14:
+    Paquetes: enviados = 4, recibidos = 0, perdidos = 4
+    (100% perdidos),
+

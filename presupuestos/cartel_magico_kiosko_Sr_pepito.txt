@@ -1,0 +1,17 @@
+--- PRESUPUESTO: CARTEL MAGICO KIOSKO SR PEPITO ---
+
+A) Desglose de Fabricación:
+  - lona                           $ 36.000,00
+  - hierro                         $ 40.000,00
+  - tornillo                       $ 20.000,00
+  ---------------------------------------------
+  Costo Total de Fabricación:      $ 96.000,00
+
+B) Resumen Financiero:
+  - Costo de Fabricación:                         $ 96.000,00
+  - Ganancia sobre Costo ({margen_ganancia_pct}%): $ 96.000,00
+  - Costo de Instalación:                         $ 20.000,00
+------------------------------------------------------------
+  PRECIO VENTA AL CLIENTE:                    $ 212.000,00
+  GANANCIA NETA DEL PROYECTO:                 $ 96.000,00
+                                                (doscientos doce mil con cero centavos)

@@ -1,0 +1,7 @@
+╔═════════════════════════════════════════╗
+║   REPORTE DE SESIÓN - EL CEREBRO        ║
+╚═════════════════════════════════════════╝
+
+[21:50:36] Uso de CPU actual: 2.3%
+[21:50:49] Uso de RAM actual: 37.2% (5.93 GB / 15.93 GB)
+[21:51:12] Visualizado el reporte: reporte_cerebro_2025-12-15_21-46-06.txt

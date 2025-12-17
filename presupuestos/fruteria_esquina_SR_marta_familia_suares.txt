@@ -1,0 +1,24 @@
+--- PRESUPUESTO: FRUTERIA ESQUINA SR MARTA FAMILIA SUARES ---
+
+A) Desglose de Fabricación:
+  - lona                 $ 16.000,00
+  - hierro               $ 17.000,00
+  - luces                $ 15.000,00
+  -----------------------------------
+  Costo de Fabricación:  $ 48.000,00
+
+B) Resumen Financiero:
+  - Costo Fabricación + Instalación:              $ 62.000,00
+  - Costo de Instalación:                         $ 14.000,00
+------------------------------------------------------------
+  PRECIO VENTA AL CLIENTE:                    $ 878.000,00
+  GANANCIA TOTAL DEL PROYECTO:                $ 816.000,00
+                                                (ochocientos setenta y ocho mil con cero centavos)
+
+==================================================
+CÁLCULO ADICIONAL: COSTO POR METRO CUADRADO
+==================================================
+  - Precio Venta Cliente:     $ 878.000,00
+  - Superficie Total:         24000.00 m² (200.0 x 120.0)
+--------------------------------------------------
+  - COSTO RESULTANTE POR m²:  $ 36,58

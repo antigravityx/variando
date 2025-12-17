@@ -1,0 +1,23 @@
+╔═════════════════════════════════════════╗
+║   REPORTE DE SESIÓN - EL CEREBRO        ║
+╚═════════════════════════════════════════╝
+
+[22:40:12] Iniciada herramienta de Traceroute.
+Traceroute a google.com:
+
+Traza a la direcci¢n google.com [142.251.129.78]
+sobre un m ximo de 30 saltos:
+
+  1     1 ms     1 ms     1 ms  192.168.0.1 
+  2     *        *        *     Tiempo de espera agotado para esta solicitud.
+  3     *        *        *     Tiempo de espera agotado para esta solicitud.
+  4    26 ms    34 ms    30 ms  host222.181-88-68.telecom.net.ar [181.88.68.222] 
+  5     *        *        *     Tiempo de espera agotado para esta solicitud.
+  6    25 ms    25 ms     *     host234.181-96-113.telecom.net.ar [181.96.113.234] 
+  7    22 ms    23 ms    21 ms  72.14.194.198 
+  8    25 ms    25 ms    25 ms  192.178.80.111 
+  9    22 ms    25 ms    21 ms  142.250.46.169 
+ 10    25 ms    24 ms    22 ms  rio07s07-in-f14.1e100.net [142.251.129.78] 
+
+Traza completa.
+

@@ -1,0 +1,23 @@
+{
+    "project_title": "Cartel luminoso simple faz kiosco SR juan jose martines",
+    "items_costo": [
+        {
+            "nombre": "lona",
+            "costo": 50000.0
+        },
+        {
+            "nombre": "hierro",
+            "costo": 35000.0
+        },
+        {
+            "nombre": "pintura",
+            "costo": 20000.0
+        },
+        {
+            "nombre": "luces",
+            "costo": 46000.0
+        }
+    ],
+    "margen_ganancia_pct": 200.0,
+    "costo_instalacion": 30000.0
+}

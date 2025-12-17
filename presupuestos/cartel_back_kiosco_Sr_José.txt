@@ -1,0 +1,18 @@
+
+--- PRESUPUESTO: CARTEL BACK KIOSCO SR JOSÉ . ---
+
+A) Desglose de Fabricación:
+  - lona                 $ 3.500,00
+  - hierro               $ 2.000,00
+  - 5000                 $ 5.000,00
+  - pintura              $ 3.000,00
+  -----------------------------------
+  Costo de Fabricación:  $ 13.500,00
+
+B) Resumen Financiero:
+  - Subtotal Producto (Fabricación + Ganancia):   $ 40.500,00
+    (Ganancia del 200.0%: $ 27.000,00)
+  - Costo de Instalación:                         $ 0,00
+------------------------------------------------------------
+  PRESUPUESTO FINAL PARA EL CLIENTE:            $ 40.500,00
+                                                (cuarenta mil quinientos con cero centavos)

@@ -1,0 +1,11 @@
+╔═════════════════════════════════════════╗
+║   REPORTE DE SESIÓN - EL CEREBRO        ║
+╚═════════════════════════════════════════╝
+
+[01:12:16] Iniciada herramienta de búsqueda de cámaras.
+  └─ Búsqueda ejecutada: inurl:"view/index.shtml"
+  └─ Búsqueda ejecutada: intitle:"Live View / - AXIS"
+  └─ Búsqueda ejecutada: inurl:viewerframe?mode=motion
+  └─ Búsqueda ejecutada: intitle:"LiveApp" "WEB" "viewer"
+  └─ Búsqueda ejecutada: intitle:"Network Camera"
+  └─ Búsqueda ejecutada: intitle:"webcam 7" inurl:8080

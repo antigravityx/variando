@@ -1851,4 +1851,20 @@ def main():
     iniciar_panel()
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception:
+        # --- CAJA NEGRA: SISTEMA DE REPORTE DE ERRORES ---
+        # Si el programa colapsa, esto atrapa el error, lo guarda y espera.
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        error_msg = f"[{timestamp}] ERROR FATAL:\n{traceback.format_exc()}\n"
+        
+        # 1. Guardar en archivo para análisis posterior
+        with open("debug_crash.txt", "a", encoding="utf-8") as f:
+            f.write(error_msg)
+        
+        # 2. Mostrar en pantalla y PAUSAR para que la ventana no se cierre
+        print(f"\n{Colors.RED}¡ALERTA DE SISTEMA! El Cerebro ha sufrido un error crítico.{Colors.ENDC}")
+        print(f"Se ha generado un reporte en: 'debug_crash.txt'")
+        print(f"\n{Colors.YELLOW}Detalle del error:{Colors.ENDC}\n{error_msg}")
+        input(f"\n{Colors.BOLD}Presiona ENTER para cerrar la ventana...{Colors.ENDC}")

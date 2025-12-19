@@ -1,0 +1,36 @@
+================================================================
+   GUÍA DE INSTALACIÓN Y USO - EL CEREBRO (Para Richon y Amigo)
+================================================================
+
+--- PARTE 1: PARA RICHON (CÓMO CREAR EL EJECUTABLE) ---
+
+1. Asegúrate de tener instalados Python y pip en tu computadora.
+2. Coloca los siguientes archivos en la misma carpeta que 'variando.py':
+   - requirements.txt
+   - generar_exe.bat
+3. Haz doble clic en el archivo 'generar_exe.bat'.
+   - Se abrirá una ventana negra (consola).
+   - Espera a que termine de instalar las librerías y compilar el código.
+   - Al final dirá "¡LISTO!".
+4. Busca una nueva carpeta llamada 'dist' que se ha creado ahí mismo.
+   - Dentro encontrarás el archivo 'El_Cerebro.exe'.
+
+--- PARTE 2: QUÉ ENTREGARLE A TU AMIGO ---
+
+Para que a tu amigo le funcione todo perfecto, debes pasarle DOS archivos:
+
+1. El archivo 'El_Cerebro.exe' (que está en la carpeta 'dist').
+2. Tu archivo '.env' (donde están las claves API).
+
+IMPORTANTE: Dile a tu amigo que ponga ambos archivos en la MISMA CARPETA
+(por ejemplo, una carpeta nueva en su Escritorio llamada "Herramientas").
+
+--- PARTE 3: PARA EL AMIGO (CÓMO USARLO) ---
+
+1. Crea una carpeta en tu Escritorio (ej: "Santuario").
+2. Pega ahí dentro el archivo 'El_Cerebro.exe' y el archivo '.env' que te pasó Richon.
+3. Haz doble clic sobre 'El_Cerebro.exe'.
+4. ¡Listo! Se abrirá la consola con el menú del programa.
+
+Nota: La primera vez que lo abras, Windows podría preguntar si confías en el archivo
+porque no tiene una firma digital oficial. Dale a "Más información" -> "Ejecutar de todas formas".

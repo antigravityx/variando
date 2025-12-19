@@ -1,0 +1,7 @@
+python-dotenv
+psutil
+pyautogui
+requests
+shodan
+beautifulsoup4
+num2words

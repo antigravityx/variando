@@ -1422,10 +1422,11 @@ def cerebro_numerico():
 
         if choice == '1':
             print(f"\n{Colors.CYAN}--- Calculadora Estándar ---{Colors.ENDC}")
-            print("Escribe una operación (ej: 5 * (10 + 2) / 3) o 'volver'.")
+            print("Escribe una operación (ej: 5 * (10 + 2) / 3).")
+            print(f"Escribe {Colors.YELLOW}0{Colors.ENDC} para volver al menú anterior.")
             while True:
                 expression = input(">> Cálculo: ").strip()
-                if expression.lower() == 'volver':
+                if expression == '0' or expression.lower() == 'volver':
                     break
                 try:
                     # Usamos eval() de forma segura, solo permitiendo caracteres numéricos y operadores.
@@ -1689,7 +1690,7 @@ def mostrar_encabezado():
     print(fr"""{Colors.BOLD}{Colors.CYAN}
       .-.
      (o.o)  EL CEREBRO
-      |=|   Panel de Control RichonOS
+      |=|   Panel de Control RichonOS v1.1
      /   \{Colors.ENDC}""")
 
 def guardar_reporte(log_sesion):

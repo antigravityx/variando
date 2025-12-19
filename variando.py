@@ -1624,6 +1624,217 @@ def actualizar_programa():
         os._exit(0) # Cerramos Python forzosamente para permitir que el bat sobrescriba el exe
     return "Actualización cancelada."
 
+def consultar_precios_referencia():
+    """Muestra una lista de precios de referencia para mano de obra."""
+    log_output = "Consulta de precios de referencia."
+    
+    # Datos proporcionados por Richon
+    precios = [
+        ("Busqueda y reparación de corto circuitos", 34441.00, 74861.00),
+        ("Certificado DCI", 79662.31, 122187.08),
+        ("Colocación / cambio bomba presurizadora", 54600.00, 109000.00),
+        ("Instalación boca eléctrica completa", 28205.00, 47039.00),
+        ("Instalación eléctrica para aire acondicionado", 33600.00, 67000.00),
+        ("Colocación / cambio tecla de encendido", 12385.00, 87167.00),
+        ("Visita de diagnóstico / Presupuestación", 24861.00, 45920.00),
+        ("Instalación de campana de extracción", 46092.00, 97734.00),
+        ("Colocación pararrayos", 201558.00, 333560.00),
+        ("Puesta a tierra / jabalina", 44047.41, 70638.15),
+        ("Tramites conexión eléctrica", 71528.13, 104571.88),
+        ("Instalación de detector de humo", 33657.00, 73912.00),
+        ("Instalación portero eléctrico", 38648.00, 65698.00),
+        ("Instalación de estufa eléctrica", 60517.00, 47738.00),
+        ("Instalación de termotanque eléctrico", 46120.00, 70327.00),
+        ("Instalación de anafe eléctrico", 27883.00, 45121.00),
+        ("Instalación de horno eléctrico", 30740.00, 58035.00),
+        ("Instalación de cocina eléctrica", 34508.00, 64074.00),
+        ("Colocación ventilador de techo con luces", 47068.00, 75783.00),
+        ("Colocación de ventilador de techo", 43045.00, 71862.00),
+        ("Colocación de artefactos de iluminación por unidad", 13120.48, 30040.48),
+        ("Colocación / cambio de tomacorriente", 13428.00, 21314.00),
+        ("Cambio / instalacion de llave térmica", 23595.00, 36945.00),
+        ("Cambio / instalacion de disyuntor", 25314.00, 39212.00)
+    ]
+
+    # --- NUEVA LISTA AAIERIC (Noviembre 2025) ---
+    # Fuente: Asociación Argentina de Instaladores Electricistas Residenciales, Industriales y Comerciales
+    # Valores monetarios en AR$ (Pesos Argentinos) - CABA y GBA
+    precios_aaieric = [
+        ("AAIERIC - Visita: Diagnóstico y Presupuesto", 43043.00, 43043.00),
+        ("AAIERIC - Urgencia (Lun-Sab >20hs / Dom / Fer)", 103191.00, 103191.00),
+        ("AAIERIC - Unidad básica (1 boca completa)", 85935.00, 85935.00),
+        ("AAIERIC - Service / Instalación mínima", 85935.00, 85935.00),
+        ("AAIERIC - Hora de Trabajo", 43043.00, 43043.00),
+        ("AAIERIC - Tablero en losa (caño met.)", 43505.00, 43505.00),
+        ("AAIERIC - Tablero en loseta (caño met.)", 45680.00, 45680.00),
+        ("AAIERIC - TP Monofásico (1 ID, 1 TM + PAT)", 253859.00, 253859.00),
+        ("AAIERIC - TP Trifásico (1 ID, 1 TM + PAT)", 343773.00, 343773.00),
+        ("AAIERIC - Amurado cañería (Ladrillo común)", 49441.00, 49441.00),
+        ("AAIERIC - Amurado cañería (Ladrillo hueco)", 48266.00, 48266.00),
+        ("AAIERIC - Amurado cañería vista (Metal/PVC)", 39517.00, 39517.00),
+        ("AAIERIC - Pase de viga/columna", 45886.00, 45886.00),
+        ("AAIERIC - Cable subterráneo (Tierra/Piso)", 43003.00, 45886.00),
+        ("AAIERIC - Caja de paso adicional", 47225.00, 50428.00),
+        ("AAIERIC - Cableado obra nueva (Opción 1)", 21144.00, 21144.00),
+        ("AAIERIC - Cableado obra nueva (Opción 2)", 29442.00, 29442.00),
+        ("AAIERIC - Recableado con artefactos", 44150.00, 44150.00),
+        ("AAIERIC - Recableado sin artefactos", 29442.00, 29442.00),
+        ("AAIERIC - Conexión: Punto/Toma/Portalámpara", 15347.00, 15347.00),
+        ("AAIERIC - Conexión: Toma doble", 19437.00, 19437.00),
+        ("AAIERIC - Conexión: Punto Combinación", 16518.00, 16518.00),
+        ("AAIERIC - Artefacto aplique simple / Spot Led", 23550.00, 23550.00),
+        ("AAIERIC - Colgante liviano (3 luces)", 47102.00, 47102.00),
+        ("AAIERIC - Colgante liviano (5 luces)", 62397.00, 62397.00),
+        ("AAIERIC - Colgante pesado (Mínimo)", 82406.00, 82406.00),
+        ("AAIERIC - Tubo Led simple (7-36W)", 47102.00, 47102.00),
+        ("AAIERIC - Tubo Led doble (7-36W)", 57982.00, 57982.00),
+        ("AAIERIC - Tubo Led (45W)", 58901.00, 58901.00),
+        ("AAIERIC - Tubo Led doble (45W)", 73091.00, 73091.00),
+        ("AAIERIC - Ventilador de techo", 85935.00, 85935.00),
+        ("AAIERIC - Ventilador de techo con luz", 107453.00, 107453.00),
+        ("AAIERIC - Acometida: Gabinete 1 Medidor Mono", 180424.00, 180424.00),
+        ("AAIERIC - Acometida: Pilar completo", 708895.00, 708895.00),
+        ("AAIERIC - Acometida: Caño (amurado+conexión)", 180424.00, 180424.00),
+        ("AAIERIC - PAT de Servicio (Jabalina+Caja)", 128855.00, 128855.00),
+        ("AAIERIC - Automatismo: Contactores", 107453.00, 107453.00),
+        ("AAIERIC - Automatismo: Sensores", 94530.00, 94530.00),
+        ("AAIERIC - Proyecto Eléctrico (Mínimo)", 437623.00, 437623.00),
+        ("AAIERIC - Bandeja <150mm H<3m (x metro)", 10433.00, 10433.00),
+        ("AAIERIC - Bandeja <150mm H>3m (x metro)", 13931.00, 13931.00),
+        ("AAIERIC - Jornal (8hs): Oficial Especializado", 75251.00, 75251.00),
+        ("AAIERIC - Jornal (8hs): Oficial Electricista", 64124.00, 64124.00),
+        ("AAIERIC - Jornal (8hs): Ayudante", 54274.00, 54274.00),
+        ("AAIERIC - Certificado DCI T1 Mono (Res/Com)", 330000.00, 330000.00),
+        ("AAIERIC - Certificado DCI T1 Trifásico", 495000.00, 495000.00),
+        ("AAIERIC - Emergencia (Atención inmediata)", 85935.00, 85935.00),
+        ("AAIERIC - Grupo Electrógeno Mono (<3.5kVA)", 214876.00, 214876.00)
+    ]
+    
+    # --- NUEVA LISTA ELECTROINSTALADOR (Nov-Dic 2025) ---
+    # Fuente: electroinstalador.com - Costos de Mano de Obra País
+    precios_electro = [
+        # Acometidas
+        ("ELECTRO - Acometida Mono hasta 10 kW", 185500.00, 185500.00),
+        ("ELECTRO - Acometida Trifásica hasta 10 kW", 264700.00, 264700.00),
+        ("ELECTRO - Acometida Trifásica 11-35 kW", 343600.00, 343600.00),
+        ("ELECTRO - Acometida Trifásica 36-50 kW", 501600.00, 501600.00),
+        # Cableado y Re-cableado
+        ("ELECTRO - Cableado en cañería nueva (1-50 bocas)", 29400.00, 29400.00),
+        ("ELECTRO - Cableado en cañería nueva (51-100 bocas)", 28400.00, 28400.00),
+        ("ELECTRO - Cableado en cañería nueva (101-500 bocas)", 28200.00, 28200.00),
+        ("ELECTRO - Subterráneo 1x4 a 4x16 mm2", 18800.00, 18800.00),
+        ("ELECTRO - Subterráneo 1x25 a 4x35 mm2", 37700.00, 37700.00),
+        ("ELECTRO - Subterráneo 1x35 a 4x70 mm2", 67400.00, 67400.00),
+        ("ELECTRO - Subterráneo mayor a 1x95 mm2", 89800.00, 89800.00),
+        ("ELECTRO - Re-cableado (1-50 bocas)", 36300.00, 36300.00),
+        ("ELECTRO - Re-cableado (51-100 bocas)", 34600.00, 34600.00),
+        ("ELECTRO - Re-cableado (101-500 bocas)", 30500.00, 30500.00),
+        # Canalización (x boca)
+        ("ELECTRO - Canalización Embutida Metálica (1-50)", 45700.00, 45700.00),
+        ("ELECTRO - Canalización Embutida Metálica (51-100)", 44800.00, 44800.00),
+        ("ELECTRO - Canalización Embutida PVC (1-50)", 44800.00, 44800.00),
+        ("ELECTRO - Canalización Embutida PVC (51-100)", 43600.00, 43600.00),
+        ("ELECTRO - Canalización Vista Metálica (1-50)", 43600.00, 43600.00),
+        ("ELECTRO - Canalización Vista Metálica (51-100)", 42700.00, 42700.00),
+        ("ELECTRO - Canalización Vista PVC (1-50)", 42700.00, 42700.00),
+        ("ELECTRO - Canalización Vista PVC (51-100)", 41800.00, 41800.00),
+        ("ELECTRO - Metálica 3/4 en Durlock (1-50)", 38000.00, 38000.00),
+        ("ELECTRO - Metálica 3/4 en Durlock (51-100)", 34100.00, 34100.00),
+        ("ELECTRO - PVC Rígido 3/4 en Durlock (1-50)", 34600.00, 34600.00),
+        ("ELECTRO - PVC Rígido 3/4 en Durlock (51-100)", 32300.00, 32300.00),
+        # Bandejas (x metro según altura)
+        ("ELECTRO - Bandeja Metálica 300mm (<2m)", 43200.00, 43200.00),
+        ("ELECTRO - Bandeja Metálica 300mm (3-5m)", 47000.00, 47000.00),
+        ("ELECTRO - Bandeja Metálica 300mm (6-10m)", 51700.00, 51700.00),
+        ("ELECTRO - Bandeja Metálica 450mm (<2m)", 47000.00, 47000.00),
+        ("ELECTRO - Bandeja Metálica 450mm (3-5m)", 51700.00, 51700.00),
+        ("ELECTRO - Bandeja Metálica 450mm (6-10m)", 56800.00, 56800.00),
+        ("ELECTRO - Bandeja Metálica 600mm (<2m)", 52300.00, 52300.00),
+        ("ELECTRO - Bandeja Metálica 600mm (3-5m)", 56800.00, 56800.00),
+        ("ELECTRO - Bandeja Metálica 600mm (6-10m)", 62300.00, 62300.00),
+        # Cablecanal y Pisoducto
+        ("ELECTRO - Cablecanal Accesorios (1-50 bocas)", 40700.00, 40700.00),
+        ("ELECTRO - Cablecanal metro adicional", 14000.00, 14000.00),
+        ("ELECTRO - Pisoducto instalación x metro", 33700.00, 33700.00),
+        ("ELECTRO - Pisoducto Cajas/Derivación", 49900.00, 49900.00),
+        ("ELECTRO - Pisoducto Curvas", 39600.00, 39600.00),
+        ("ELECTRO - Pisoducto Periscopios", 47100.00, 47100.00),
+        ("ELECTRO - Pisoducto Cableado Energía", 44600.00, 44600.00),
+        ("ELECTRO - Pisoducto Instalación Tomas", 32900.00, 32900.00),
+        # CCTV
+        ("ELECTRO - CCTV Superficie x cámara", 73800.00, 73800.00),
+        ("ELECTRO - CCTV Superficie BCR 3 cámaras", 257500.00, 257500.00),
+        ("ELECTRO - CCTV Canalizado x cámara", 105900.00, 105900.00),
+        ("ELECTRO - CCTV Canalizado BCR 3 cámaras", 307900.00, 307900.00),
+        # Luminarias y Artefactos
+        ("ELECTRO - Aplique 1-2 luces", 25000.00, 25000.00),
+        ("ELECTRO - Aplique 3-5 luces", 28000.00, 28000.00),
+        ("ELECTRO - Colgante 1 luz", 41000.00, 41000.00),
+        ("ELECTRO - Colgante 2 luces", 44000.00, 44000.00),
+        ("ELECTRO - Farola pared 1 luz", 45000.00, 45000.00),
+        ("ELECTRO - Artefacto Tubo LED simple", 47000.00, 47000.00),
+        ("ELECTRO - Artefacto Tubo LED doble", 57000.00, 57000.00),
+        ("ELECTRO - Luz de emergencia", 37000.00, 37000.00),
+        ("ELECTRO - Brazo alumbrado público", 158000.00, 158000.00),
+        ("ELECTRO - Extractor baño", 136000.00, 136000.00),
+        ("ELECTRO - Extractor cocina", 193000.00, 193000.00),
+        ("ELECTRO - Campana tipo spar", 126000.00, 126000.00),
+        ("ELECTRO - Ventilador techo s/luces", 83000.00, 83000.00),
+        ("ELECTRO - Ventilador techo c/luces", 106000.00, 106000.00),
+        # Corrección Potencia y Tableros
+        ("ELECTRO - Tablero Mono hasta 2 Kvar", 245000.00, 245000.00),
+        ("ELECTRO - Tablero Tri hasta 10 Kvar", 276500.00, 276500.00),
+        ("ELECTRO - Tablero Tri c/contactor 10 Kvar", 390900.00, 390900.00),
+        ("ELECTRO - Tablero Tri Auto 50 Kvar", 471500.00, 471500.00),
+        ("ELECTRO - Tablero Domiciliario Superficie (1-54)", 40500.00, 40500.00),
+        ("ELECTRO - Tablero Domiciliario Empotrado (1-24)", 170500.00, 170500.00),
+        ("ELECTRO - Colocación Termomagnética/Diferencial Mono", 75300.00, 75300.00),
+        ("ELECTRO - Colocación Termomagnética/Diferencial Tri", 99300.00, 99300.00),
+        # Mantenimiento y UOCRA
+        ("ELECTRO - Emergencia Lun-Vie <5km (x hora)", 57700.00, 57700.00),
+        ("ELECTRO - Emergencia Sab-Dom <5km (x hora)", 80500.00, 80500.00),
+        ("ELECTRO - UOCRA Oficial Especializado (x hora)", 5771.00, 5771.00),
+        ("ELECTRO - UOCRA Oficial Electricista (x hora)", 4700.00, 4700.00),
+        ("ELECTRO - UOCRA Ayudante (x hora)", 3817.00, 3817.00),
+        # Otros
+        ("ELECTRO - Proyecto Eléctrico (hasta 25 bocas)", 356900.00, 356900.00),
+        ("ELECTRO - Puesta a Tierra (Jabalina+Caja)", 87000.00, 87000.00)
+    ]
+
+    # Unimos las dos listas para la búsqueda
+    precios.extend(precios_aaieric)
+    precios.extend(precios_electro)
+
+    while True:
+        mostrar_encabezado()
+        print(f"\n{Colors.MAGENTA}--- Lista de Precios de Referencia (Mano de Obra) ---{Colors.ENDC}")
+        print(f"{Colors.YELLOW}[INFO] Estos precios son orientativos. Úsalos como guía.{Colors.ENDC}")
+        
+        search = input("\n>> Buscar servicio (o presiona Enter para ver todos, 'v' para volver): ").lower().strip()
+        
+        if search == 'v':
+            break
+            
+        print(f"\n{Colors.BOLD}{'Servicio':<55}{'Mínimo':<15}{'Máximo':<15}{Colors.ENDC}")
+        print("-" * 85)
+        
+        found = False
+        for item in precios:
+            servicio, min_p, max_p = item
+            if search in servicio.lower():
+                found = True
+                # Formateo manual para moneda (simulando locale español si falla el del sistema)
+                min_str = f"$ {min_p:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+                max_str = f"$ {max_p:,.2f}".replace(",", "X").replace(".", ",").replace("X", ".")
+                print(f"{servicio:<55}{Colors.GREEN}{min_str:<15}{Colors.ENDC}{Colors.CYAN}{max_str:<15}{Colors.ENDC}")
+        
+        if not found:
+            print(f"{Colors.RED}No se encontraron servicios que coincidan con '{search}'.{Colors.ENDC}")
+            
+        input("\n--- Presiona Enter para realizar otra consulta ---")
+
+    return log_output
+
 def mostrar_menu():
     """Muestra el menú de opciones numerado."""
     # --- Menú rediseñado en columnas para ser más compacto ---
@@ -1651,7 +1862,8 @@ def mostrar_menu():
         f"{Colors.GREEN}16. Cerebro Numérico{Colors.ENDC}",
         f"{Colors.CYAN}17. Ojo de Halcón{Colors.ENDC}",
         f"{Colors.BLUE}18. Gestionar Stock{Colors.ENDC}",
-        f"{Colors.YELLOW}19. Actualizar Programa{Colors.ENDC}"
+        f"{Colors.YELLOW}19. Actualizar Programa{Colors.ENDC}",
+        f"{Colors.CYAN}20. Precios Referencia{Colors.ENDC}"
     ]
 
     # Imprimimos en formato de tabla
@@ -1734,7 +1946,7 @@ def menu_post_accion(opcion_actual, log_sesion):
             return str((int(opcion_actual) % 18) + 1) # Cicla a través de las opciones
         elif eleccion == 'g':
             guardar_reporte(log_sesion)
-        elif eleccion in [str(i) for i in range(1, 20)]: # Ampliar si hay más opciones
+        elif eleccion in [str(i) for i in range(1, 21)]: # Ampliar si hay más opciones
             return eleccion # Devuelve el número de la nueva opción a ejecutar
         else:
             print(f"{Colors.RED}[ERROR] Opción no reconocida.{Colors.ENDC}")
@@ -1828,6 +2040,10 @@ def iniciar_panel():
                 proxima_opcion = menu_post_accion(opcion, log_sesion)
             elif opcion == '19':
                 log = actualizar_programa()
+                log_sesion.append(f"[{datetime.now().strftime('%H:%M:%S')}] {log}")
+                proxima_opcion = menu_post_accion(opcion, log_sesion)
+            elif opcion == '20':
+                log = consultar_precios_referencia()
                 log_sesion.append(f"[{datetime.now().strftime('%H:%M:%S')}] {log}")
                 proxima_opcion = menu_post_accion(opcion, log_sesion)
             elif opcion == '0':

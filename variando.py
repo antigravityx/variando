@@ -1649,7 +1649,7 @@ def mostrar_menu():
         f"{Colors.RED}15. Cazador Shodan{Colors.ENDC}",
         f"{Colors.GREEN}16. Cerebro Numérico{Colors.ENDC}",
         f"{Colors.CYAN}17. Ojo de Halcón{Colors.ENDC}",
-        f"{Colors.BLUE}18. Gestionar Stock{Colors.ENDC}"
+        f"{Colors.BLUE}18. Gestionar Stock{Colors.ENDC}",
         f"{Colors.YELLOW}19. Actualizar Programa{Colors.ENDC}"
     ]
 

@@ -13,15 +13,15 @@
    - Espera a que termine de instalar las librerías y compilar el código.
    - Al final dirá "¡LISTO!".
 4. Busca una nueva carpeta llamada 'dist' que se ha creado ahí mismo.
-   - Dentro encontrarás el archivo 'El_Cerebro.exe'.
+   - Dentro encontrarás el archivo 'El_Cerebro_Final.exe'.
 
 --- PARTE 1.5: CÓMO CONFIGURAR LAS ACTUALIZACIONES (GIT) ---
 
 1. Crea un repositorio en GitHub (si no lo tienes).
 2. Sube todo tu código.
-3. IMPORTANTE: Debes subir también la carpeta 'dist' con el archivo 'El_Cerebro.exe' dentro.
+3. IMPORTANTE: Debes subir también la carpeta 'dist' con el archivo 'El_Cerebro_Final.exe' dentro.
    (Normalmente los .exe se ignoran en git, pero para este truco necesitamos subirlo).
-4. Ve a GitHub, entra a la carpeta 'dist', haz clic en 'El_Cerebro.exe' y busca el botón "Raw" o "Download".
+4. Ve a GitHub, entra a la carpeta 'dist', haz clic en 'El_Cerebro_Final.exe' y busca el botón "Raw" o "Download".
    Copia ese enlace.
 5. Edita el archivo 'ACTUALIZAR.bat' y pega ese enlace donde dice "REEMPLAZA LA URL...".
 6. Ahora sí, pásale los archivos a tu amigo.
@@ -36,7 +36,7 @@ Cada vez que quieras actualizarle el programa a tu amigo:
 
 Para que a tu amigo le funcione todo perfecto, debes pasarle CUATRO archivos:
 
-1. El archivo 'El_Cerebro.exe' (que está en la carpeta 'dist').
+1. El archivo 'El_Cerebro_Final.exe' (que está en la carpeta 'dist').
 2. Tu archivo '.env' (donde están las claves API).
 3. El archivo 'EJECUTAR_SIN_MIEDO.bat' (el truco para Windows).
 4. El archivo 'ACTUALIZAR.bat' (para que pueda recibir mejoras).

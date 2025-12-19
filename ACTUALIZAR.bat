@@ -13,7 +13,7 @@ timeout /t 3 /nobreak >nul
 echo.
 echo 3. Descargando la nueva version desde GitHub...
 :: REEMPLAZA LA URL DE ABAJO CON LA URL "RAW" DE TU EJECUTABLE EN GITHUB
-powershell -Command "Invoke-WebRequest -Uri 'https://github.com/TU_USUARIO/TU_REPO/raw/main/dist/El_Cerebro.exe' -OutFile 'El_Cerebro.exe'"
+powershell -Command "Invoke-WebRequest -Uri 'https://github.com/antigravityx/variando/blob/master/dist/El_Cerebro.exe' -OutFile 'El_Cerebro.exe'"
 
 echo.
 echo ==========================================

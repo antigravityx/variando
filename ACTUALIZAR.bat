@@ -16,7 +16,15 @@ timeout /t 3 /nobreak >nul
 echo.
 echo 3. Descargando la nueva version desde GitHub...
 :: REEMPLAZA LA URL DE ABAJO CON LA URL "RAW" DE TU EJECUTABLE EN GITHUB
-powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri 'https://github.com/antigravityx/variando/raw/master/dist/El_Cerebro_Final.exe' -OutFile 'El_Cerebro_Final.exe'"
+powershell -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; Invoke-WebRequest -Uri 'https://github.com/antigravityx/variando/raw/refs/heads/master/dist/El_Cerebro_Final.exe' -OutFile 'El_Cerebro_Final.exe'"
+
+if %errorlevel% neq 0 (
+    echo.
+    echo [ERROR CRITICO] No se pudo descargar el archivo.
+    echo Mira el mensaje rojo de arriba para saber por que.
+    pause
+    exit
+)
 
 echo.
 echo ==========================================

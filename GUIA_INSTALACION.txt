@@ -15,22 +15,42 @@
 4. Busca una nueva carpeta llamada 'dist' que se ha creado ahí mismo.
    - Dentro encontrarás el archivo 'El_Cerebro.exe'.
 
+--- PARTE 1.5: CÓMO CONFIGURAR LAS ACTUALIZACIONES (GIT) ---
+
+1. Crea un repositorio en GitHub (si no lo tienes).
+2. Sube todo tu código.
+3. IMPORTANTE: Debes subir también la carpeta 'dist' con el archivo 'El_Cerebro.exe' dentro.
+   (Normalmente los .exe se ignoran en git, pero para este truco necesitamos subirlo).
+4. Ve a GitHub, entra a la carpeta 'dist', haz clic en 'El_Cerebro.exe' y busca el botón "Raw" o "Download".
+   Copia ese enlace.
+5. Edita el archivo 'ACTUALIZAR.bat' y pega ese enlace donde dice "REEMPLAZA LA URL...".
+6. Ahora sí, pásale los archivos a tu amigo.
+
+Cada vez que quieras actualizarle el programa a tu amigo:
+1. Modifica tu código.
+2. Ejecuta 'generar_exe.bat'.
+3. Haz un 'git add', 'git commit' y 'git push' para subir el NUEVO .exe a GitHub.
+4. ¡Listo! Tu amigo solo tendrá que darle a la opción 19 del menú.
+
 --- PARTE 2: QUÉ ENTREGARLE A TU AMIGO ---
 
-Para que a tu amigo le funcione todo perfecto, debes pasarle DOS archivos:
+Para que a tu amigo le funcione todo perfecto, debes pasarle CUATRO archivos:
 
 1. El archivo 'El_Cerebro.exe' (que está en la carpeta 'dist').
 2. Tu archivo '.env' (donde están las claves API).
+3. El archivo 'EJECUTAR_SIN_MIEDO.bat' (el truco para Windows).
+4. El archivo 'ACTUALIZAR.bat' (para que pueda recibir mejoras).
 
-IMPORTANTE: Dile a tu amigo que ponga ambos archivos en la MISMA CARPETA
+IMPORTANTE: Dile a tu amigo que ponga los 4 archivos en la MISMA CARPETA
 (por ejemplo, una carpeta nueva en su Escritorio llamada "Herramientas").
 
 --- PARTE 3: PARA EL AMIGO (CÓMO USARLO) ---
 
 1. Crea una carpeta en tu Escritorio (ej: "Santuario").
-2. Pega ahí dentro el archivo 'El_Cerebro.exe' y el archivo '.env' que te pasó Richon.
-3. Haz doble clic sobre 'El_Cerebro.exe'.
-4. ¡Listo! Se abrirá la consola con el menú del programa.
+2. Pega ahí dentro los 4 archivos que te pasó Richon.
+3. Haz doble clic sobre 'EJECUTAR_SIN_MIEDO.bat'.
+4. ¡Listo! El programa se abrirá y además creará un ACCESO DIRECTO en tu Escritorio.
+5. A partir de ahora, puedes abrirlo directamente desde el icono en tu Escritorio.
 
-Nota: La primera vez que lo abras, Windows podría preguntar si confías en el archivo
-porque no tiene una firma digital oficial. Dale a "Más información" -> "Ejecutar de todas formas".
+Nota: Si al ejecutar el .bat sale una pantalla azul, dale a "Más información"
+y luego a "Ejecutar de todas formas".

@@ -1608,6 +1608,21 @@ def analizador_disco():
 
     return "Análisis de disco finalizado."
 
+def actualizar_programa():
+    """Ejecuta el script externo para actualizar el programa desde GitHub."""
+    if not os.path.exists("ACTUALIZAR.bat"):
+        print(f"\n{Colors.RED}[ERROR] No se encontró el archivo 'ACTUALIZAR.bat'.{Colors.ENDC}")
+        return "Fallo de actualización: falta script."
+
+    print(f"\n{Colors.MAGENTA}--- Actualización del Sistema ---{Colors.ENDC}")
+    print("El programa se cerrará, descargará la nueva versión y se reiniciará.")
+    confirm = input("¿Estás seguro? (s/n): ").lower().strip()
+    if confirm == 's':
+        print(f"{Colors.GREEN}Iniciando secuencia de actualización...{Colors.ENDC}")
+        subprocess.Popen(["ACTUALIZAR.bat"], shell=True)
+        os._exit(0) # Cerramos Python forzosamente para permitir que el bat sobrescriba el exe
+    return "Actualización cancelada."
+
 def mostrar_menu():
     """Muestra el menú de opciones numerado."""
     # --- Menú rediseñado en columnas para ser más compacto ---
@@ -1635,6 +1650,7 @@ def mostrar_menu():
         f"{Colors.GREEN}16. Cerebro Numérico{Colors.ENDC}",
         f"{Colors.CYAN}17. Ojo de Halcón{Colors.ENDC}",
         f"{Colors.BLUE}18. Gestionar Stock{Colors.ENDC}"
+        f"{Colors.YELLOW}19. Actualizar Programa{Colors.ENDC}"
     ]
 
     # Imprimimos en formato de tabla
@@ -1717,7 +1733,7 @@ def menu_post_accion(opcion_actual, log_sesion):
             return str((int(opcion_actual) % 18) + 1) # Cicla a través de las opciones
         elif eleccion == 'g':
             guardar_reporte(log_sesion)
-        elif eleccion in [str(i) for i in range(1, 19)]: # Ampliar si hay más opciones
+        elif eleccion in [str(i) for i in range(1, 20)]: # Ampliar si hay más opciones
             return eleccion # Devuelve el número de la nueva opción a ejecutar
         else:
             print(f"{Colors.RED}[ERROR] Opción no reconocida.{Colors.ENDC}")
@@ -1807,6 +1823,10 @@ def iniciar_panel():
                 proxima_opcion = menu_post_accion(opcion, log_sesion)
             elif opcion == '18':
                 log = gestionar_stock()
+                log_sesion.append(f"[{datetime.now().strftime('%H:%M:%S')}] {log}")
+                proxima_opcion = menu_post_accion(opcion, log_sesion)
+            elif opcion == '19':
+                log = actualizar_programa()
                 log_sesion.append(f"[{datetime.now().strftime('%H:%M:%S')}] {log}")
                 proxima_opcion = menu_post_accion(opcion, log_sesion)
             elif opcion == '0':

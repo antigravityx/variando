@@ -1,0 +1,31 @@
+--- PRESUPUESTO DE PROYECTO: CAJA + CABLEADO ---
+Fecha: 2025-12-21 19:25
+
+--- A) ARTEFACTOS ---
+Artefacto Base: caja
+Componentes por unidad:
+  - 1 x bastidor ($ 1500.00 c/u)
+  - 2 x llave toma ($ 1600.00 c/u)
+  - 1 x llave punto ($ 2000.00 c/u)
+Costo unitario armado: $ 6.700,00
+Cantidad total: 30
+SUBTOTAL ARTEFACTOS: $ 201.000,00
+
+--- B) CABLEADO ---
+  - negro retorno  1,5: 30.0 mts x $ 1300.00 = $ 39,000.00
+  - azul neutro 2,5: 40.0 mts x $ 2000.00 = $ 80,000.00
+  - rojo positivo 2.5: 40.0 mts x $ 2300.00 = $ 92,000.00
+SUBTOTAL CABLEADO: $ 211.000,00
+
+========================================
+TOTAL GENERAL DEL PROYECTO: $ 412.000,00
+(cuatrocientos doce mil con cero centavos)
+========================================
+
+--- LISTA DE COMPRAS CONSOLIDADA ---
+  [ ] 30 x bastidor
+  [ ] 30 x llave punto
+  [ ] 60 x llave toma
+  [ ] 30.0 mts x Cable negro retorno  1,5
+  [ ] 40.0 mts x Cable azul neutro 2,5
+  [ ] 40.0 mts x Cable rojo positivo 2.5

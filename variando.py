@@ -18,6 +18,9 @@ from bs4 import BeautifulSoup
 from num2words import num2words
 import locale
 from urllib.parse import quote_plus
+import shutil
+import socket
+import traceback
 # Carga las variables del archivo .env en el entorno
 load_dotenv()
 
@@ -677,7 +680,7 @@ def herramienta_ping():
     return log_output
 
 def analizar_redes_wifi():
-    """Escanea y muestra información detallada de las redes WiFi disponibles (solo Windows)."""
+    """Escanea, muestra y permite conectar a redes WiFi (solo Windows)."""
     if os.name != 'nt':
         msg = "[ERROR] Esta función solo está disponible en Windows."
         print(f"\n{Colors.RED}{msg}{Colors.ENDC}")
@@ -732,7 +735,76 @@ def analizar_redes_wifi():
         color = get_color_for_usage(signal)
         print(f"{net.get('SSID', 'N/A'):<30}{color}{str(signal)+'%':<10}{Colors.ENDC}{net.get('Canal', 'N/A'):<8}{net.get('Autenticación', 'N/A'):<20}{net.get('Cifrado', 'N/A'):<15}")
 
-    return f"Análisis WiFi completado. Se encontraron {len(sorted_networks)} redes."
+    # --- NUEVA FUNCIONALIDAD: CONEXIÓN TÁCTICA ---
+    print(f"\n{Colors.MAGENTA}Opciones de Red:{Colors.ENDC}")
+    print("  Escribe el número de una red para intentar conectarte.")
+    print("  O presiona Enter para volver al menú.")
+    
+    choice = input(">> ").strip()
+    if not choice.isdigit():
+        return f"Análisis WiFi completado. Se encontraron {len(sorted_networks)} redes."
+
+    idx = int(choice) - 1
+    if 0 <= idx < len(sorted_networks):
+        target_net = sorted_networks[idx]
+        ssid = target_net.get('SSID')
+        print(f"\n{Colors.CYAN}--- Intentando conectar a: {ssid} ---{Colors.ENDC}")
+        
+        password = input(f">> Introduce la contraseña para '{ssid}': ").strip()
+        if not password:
+            return "Conexión cancelada: falta contraseña."
+
+        # Creamos un perfil XML temporal para netsh (Configuración WPA2 estándar)
+        profile_xml = f"""<?xml version="1.0"?>
+<WLANProfile xmlns="http://www.microsoft.com/networking/WLAN/profile/v1">
+    <name>{ssid}</name>
+    <SSIDConfig>
+        <SSID>
+            <name>{ssid}</name>
+        </SSID>
+    </SSIDConfig>
+    <connectionType>ESS</connectionType>
+    <connectionMode>auto</connectionMode>
+    <MSM>
+        <security>
+            <authEncryption>
+                <authentication>WPA2PSK</authentication>
+                <encryption>AES</encryption>
+                <useOneX>false</useOneX>
+            </authEncryption>
+            <sharedKey>
+                <keyType>passPhrase</keyType>
+                <protected>false</protected>
+                <keyMaterial>{password}</keyMaterial>
+            </sharedKey>
+        </security>
+    </MSM>
+</WLANProfile>"""
+        
+        try:
+            # 1. Guardar XML
+            with open("wifi_temp.xml", "w") as f:
+                f.write(profile_xml)
+            
+            # 2. Añadir perfil a Windows
+            subprocess.run(['netsh', 'wlan', 'add', 'profile', 'filename=wifi_temp.xml'], capture_output=True, check=True)
+            
+            # 3. Conectar
+            print(f"{Colors.YELLOW}Enviando orden de conexión...{Colors.ENDC}")
+            subprocess.run(['netsh', 'wlan', 'connect', 'name=' + ssid], capture_output=True, check=True)
+            
+            # 4. Limpieza
+            os.remove("wifi_temp.xml")
+            print(f"{Colors.GREEN}[SUCCESS] Windows está intentando conectarse. Verifica tu icono de WiFi en unos segundos.{Colors.ENDC}")
+            return f"Intento de conexión a WiFi '{ssid}' realizado."
+            
+        except Exception as e:
+            print(f"{Colors.RED}[ERROR] Fallo al intentar conectar: {e}{Colors.ENDC}")
+            if os.path.exists("wifi_temp.xml"): os.remove("wifi_temp.xml")
+            return f"Error conexión WiFi: {e}"
+    else:
+        print(f"{Colors.RED}[ERROR] Selección no válida.{Colors.ENDC}")
+        return "Selección de red no válida."
 
 def depredador_silencioso():
     """Busca cámaras públicas de forma sigilosa y permite búsquedas geográficas."""
@@ -1405,6 +1477,183 @@ def calculadora_presupuestos():
             break
     return log_output
 
+def calculadora_por_artefactos():
+    """Calcula el costo y los materiales necesarios para ensamblar múltiples artefactos idénticos."""
+    log_output = "Iniciada Calculadora por Artefactos."
+    print(f"\n{Colors.CYAN}--- Calculadora de Presupuestos por Artefactos ---{Colors.ENDC}")
+    print("Define los componentes de UN artefacto y luego calcula el total para varios.")
+
+    while True:
+        try:
+            # --- 1. Definir el Artefacto ---
+            nombre_artefacto = input("\n>> Introduce el nombre del artefacto (ej: Caja de luz, Tablero): ").strip()
+            if not nombre_artefacto:
+                print(f"{Colors.RED}[ERROR] El nombre es obligatorio.{Colors.ENDC}")
+                continue
+
+            # --- 2. Desglose de Componentes ---
+            print(f"\n{Colors.MAGENTA}--- Componentes para UN/A '{nombre_artefacto}' ---{Colors.ENDC}")
+            componentes = []
+            while True:
+                nombre_item = input("  >> Nombre del componente (o 'fin' para terminar): ").strip()
+                if nombre_item.lower() == 'fin':
+                    if not componentes:
+                        print(f"{Colors.YELLOW}[INFO] No se añadieron componentes. Volviendo...{Colors.ENDC}")
+                        break
+                    else:
+                        break
+                
+                costo_item = float(input(f"     - Precio de costo de '{nombre_item}': $ ").strip())
+                cantidad_item = int(input(f"     - ¿Cuántos '{nombre_item}' lleva UN/A '{nombre_artefacto}'?: ").strip())
+                
+                componentes.append({
+                    'nombre': nombre_item, 
+                    'costo_unitario': costo_item, 
+                    'cantidad_por_artefacto': cantidad_item
+                })
+                print(f"{Colors.GREEN}   -> Componente añadido.{Colors.ENDC}")
+
+            if not componentes:
+                break # Salir si no se añadieron componentes
+
+            # --- 3. Cantidad Total de Artefactos ---
+            total_artefactos = int(input(f"\n>> ¿Cuántos artefactos '{nombre_artefacto}' necesitas armar en total?: ").strip())
+
+            # --- 4. Cálculos ---
+            costo_un_artefacto = 0
+            lista_compras = {}
+
+            for item in componentes:
+                costo_un_artefacto += item['costo_unitario'] * item['cantidad_por_artefacto']
+                
+                cantidad_total_item = item['cantidad_por_artefacto'] * total_artefactos
+                lista_compras[item['nombre']] = lista_compras.get(item['nombre'], 0) + cantidad_total_item
+            
+            costo_total_proyecto = costo_un_artefacto * total_artefactos
+
+            # --- 5. Mostrar Resultado ---
+            costo_unitario_f, _ = format_and_describe_number(costo_un_artefacto)
+            costo_total_f, _ = format_and_describe_number(costo_total_proyecto)
+
+            print(f"\n{Colors.BOLD}{Colors.GREEN}--- RESULTADO PARCIAL (ARTEFACTOS) ---{Colors.ENDC}")
+            print(f"  - {'Artefacto base:':<30} {nombre_artefacto}")
+            print(f"  - {'Costo por CADA artefacto:':<30} {Colors.YELLOW}$ {costo_unitario_f}{Colors.ENDC}")
+            print(f"  - {'Cantidad total de artefactos:':<30} {total_artefactos}")
+            print("-" * 50)
+            print(f"  {Colors.BOLD}{'SUBTOTAL ARTEFACTOS:':<30}{Colors.ENDC} {Colors.GREEN}{Colors.BOLD}$ {costo_total_f}{Colors.ENDC}")
+
+            # --- 6. (NUEVO) Presupuesto de Cableado ---
+            costo_total_cables = 0
+            lista_cables = []
+            
+            print(f"\n{Colors.MAGENTA}--- FASE 2: CABLEADO Y CONEXIONES ---{Colors.ENDC}")
+            agregar_cables = input(f">> ¿Quieres agregar cables a este presupuesto? (s/n): ").lower().strip()
+            
+            if agregar_cables == 's':
+                print(f"{Colors.CYAN}Introduce los cables necesarios (ej: 1.5mm, 2.5mm, Sintenax, etc.){Colors.ENDC}")
+                while True:
+                    tipo_cable = input("  >> Tipo de cable (o 'fin'): ").strip()
+                    if tipo_cable.lower() == 'fin':
+                        break
+                    
+                    try:
+                        costo_metro = float(input(f"     - Costo por metro de '{tipo_cable}': $ ").strip())
+                        metros = float(input(f"     - Cantidad de metros lineales: ").strip())
+                        
+                        subtotal_cable = costo_metro * metros
+                        costo_total_cables += subtotal_cable
+                        
+                        lista_cables.append({
+                            'tipo': tipo_cable,
+                            'costo_metro': costo_metro,
+                            'metros': metros,
+                            'subtotal': subtotal_cable
+                        })
+                        print(f"{Colors.GREEN}   -> Cable añadido al presupuesto.{Colors.ENDC}")
+                    except ValueError:
+                        print(f"{Colors.RED}[ERROR] Introduce números válidos.{Colors.ENDC}")
+
+            # --- 7. (NUEVO) Totales Finales ---
+            gran_total = costo_total_proyecto + costo_total_cables
+            gran_total_f, gran_total_palabras = format_and_describe_number(gran_total)
+            costo_cables_f, _ = format_and_describe_number(costo_total_cables)
+
+            print(f"\n{Colors.BOLD}{Colors.GREEN}=== RESUMEN FINAL DEL PROYECTO ==={Colors.ENDC}")
+            print(f"  1. Total Artefactos ({total_artefactos} u.): {Colors.YELLOW}$ {costo_total_f}{Colors.ENDC}")
+            if costo_total_cables > 0:
+                print(f"  2. Total Cableado:              {Colors.YELLOW}$ {costo_cables_f}{Colors.ENDC}")
+            print("-" * 50)
+            print(f"  {Colors.BOLD}TOTAL GENERAL:{Colors.ENDC}                  {Colors.GREEN}{Colors.BOLD}$ {gran_total_f}{Colors.ENDC}")
+            print(f"  {Colors.CYAN}{gran_total_palabras}{Colors.ENDC}")
+
+            print(f"\n{Colors.CYAN}{Colors.BOLD}--- LISTA DE COMPRAS CONSOLIDADA ---{Colors.ENDC}")
+            print(f"  {Colors.BOLD}A) Componentes para {total_artefactos} {nombre_artefacto}(s):{Colors.ENDC}")
+            for nombre, cantidad in sorted(lista_compras.items()):
+                print(f"     - {cantidad} x {nombre}")
+            
+            if lista_cables:
+                print(f"  {Colors.BOLD}B) Cables:{Colors.ENDC}")
+                for cab in lista_cables:
+                    print(f"     - {cab['metros']} mts x Cable {cab['tipo']}")
+
+            log_output += f"\n  └─ Proyecto '{nombre_artefacto}': Artefactos=${costo_total_f} + Cables=${costo_cables_f} = Total ${gran_total_f}"
+
+            # --- 8. (NUEVO) Guardar ---
+            guardar = input(f"\n{Colors.MAGENTA}>> ¿Quieres GUARDAR este presupuesto en un archivo? (s/n): {Colors.ENDC}").lower().strip()
+            
+            if guardar == 's':
+                # Generar contenido del archivo
+                lines = []
+                lines.append(f"--- PRESUPUESTO DE PROYECTO: {nombre_artefacto.upper()} + CABLEADO ---")
+                lines.append(f"Fecha: {datetime.now().strftime('%Y-%m-%d %H:%M')}")
+                lines.append("\n--- A) ARTEFACTOS ---")
+                lines.append(f"Artefacto Base: {nombre_artefacto}")
+                lines.append(f"Componentes por unidad:")
+                for item in componentes:
+                    lines.append(f"  - {item['cantidad_por_artefacto']} x {item['nombre']} ($ {item['costo_unitario']:.2f} c/u)")
+                lines.append(f"Costo unitario armado: $ {costo_unitario_f}")
+                lines.append(f"Cantidad total: {total_artefactos}")
+                lines.append(f"SUBTOTAL ARTEFACTOS: $ {costo_total_f}")
+                
+                if lista_cables:
+                    lines.append("\n--- B) CABLEADO ---")
+                    for cab in lista_cables:
+                        lines.append(f"  - {cab['tipo']}: {cab['metros']} mts x $ {cab['costo_metro']:.2f} = $ {cab['subtotal']:,.2f}")
+                    lines.append(f"SUBTOTAL CABLEADO: $ {costo_cables_f}")
+                
+                lines.append("\n" + "="*40)
+                lines.append(f"TOTAL GENERAL DEL PROYECTO: $ {gran_total_f}")
+                lines.append(gran_total_palabras)
+                lines.append("="*40)
+                
+                lines.append("\n--- LISTA DE COMPRAS CONSOLIDADA ---")
+                for nombre, cantidad in sorted(lista_compras.items()):
+                    lines.append(f"  [ ] {cantidad} x {nombre}")
+                if lista_cables:
+                    for cab in lista_cables:
+                        lines.append(f"  [ ] {cab['metros']} mts x Cable {cab['tipo']}")
+
+                # Guardar archivo
+                budget_dir = "presupuestos"
+                if not os.path.exists(budget_dir):
+                    os.makedirs(budget_dir)
+                
+                safe_name = re.sub(r'[^\w\s-]', '', nombre_artefacto).strip().replace(' ', '_')
+                filename = f"{budget_dir}/Proyecto_{safe_name}_{datetime.now().strftime('%Y%m%d_%H%M')}.txt"
+                
+                with open(filename, 'w', encoding='utf-8') as f:
+                    f.write('\n'.join(lines))
+                
+                print(f"\n{Colors.GREEN}[SUCCESS] Presupuesto guardado en: {filename}{Colors.ENDC}")
+
+        except ValueError:
+            print(f"{Colors.RED}[ERROR] Entrada no válida. Por favor, introduce solo números donde se pida.{Colors.ENDC}")
+        
+        if input("\n>> ¿Hacer otro cálculo por artefactos? (s/n): ").lower() != 's':
+            break
+            
+    return log_output
+
 def cerebro_numerico():
     """Módulo con herramientas de cálculo matemático."""
     log_output = "Iniciado Cerebro Numérico."
@@ -1416,6 +1665,7 @@ def cerebro_numerico():
         print("  2. Calculadora de Porcentajes")
         print(f"  3. Calculadora de Costos por Superficie")
         print(f"  {Colors.GREEN}4. Calculadora de Proyectos (Detallada){Colors.ENDC}")
+        print(f"  {Colors.CYAN}5. Calculadora por Artefactos{Colors.ENDC}")
         print(f"  {Colors.YELLOW}0. Volver al menú principal{Colors.ENDC}")
         
         choice = input("\n>> Elige una herramienta: ").strip()
@@ -1474,6 +1724,10 @@ def cerebro_numerico():
 
         elif choice == '4':
             log = calculadora_proyectos_detallada()
+            log_output += f"\n  └─ {log}"
+
+        elif choice == '5':
+            log = calculadora_por_artefactos()
             log_output += f"\n  └─ {log}"
 
         elif choice == '0':
@@ -1835,6 +2089,644 @@ def consultar_precios_referencia():
 
     return log_output
 
+def limpieza_sistema():
+    """Elimina archivos temporales y basura del sistema."""
+    log_output = "Iniciada Limpieza del Sistema."
+    print(f"\n{Colors.MAGENTA}--- Limpieza del Sistema ---{Colors.ENDC}")
+    print(f"{Colors.RED}ADVERTENCIA: Se eliminarán archivos temporales y cachés.{Colors.ENDC}")
+    print("Esto libera espacio. Asegúrate de haber guardado tu trabajo en otros programas.")
+    
+    # Rutas comunes de basura en Windows
+    rutas_a_limpiar = [
+        os.environ.get('TEMP'), # Temp del usuario
+        os.path.join(os.environ.get('SystemRoot', 'C:\\Windows'), 'Temp'), # Temp del sistema
+        os.path.join(os.environ.get('SystemRoot', 'C:\\Windows'), 'Prefetch') # Prefetch
+    ]
+
+    print(f"\n{Colors.CYAN}Se analizarán y limpiarán las siguientes rutas:{Colors.ENDC}")
+    for ruta in rutas_a_limpiar:
+        if ruta and os.path.exists(ruta):
+            print(f"  -> {ruta}")
+
+    if input("\n>> ¿Continuar con la limpieza? (s/n): ").lower().strip() != 's':
+        return "Limpieza cancelada."
+
+    bytes_liberados = 0
+    print("\nIniciando limpieza...")
+    
+    for carpeta in rutas_a_limpiar:
+        if not carpeta or not os.path.exists(carpeta):
+            continue
+            
+        print(f"  -> Barriendo: {carpeta}")
+        # Recorremos la carpeta
+        for root, dirs, files in os.walk(carpeta):
+            for f in files:
+                try:
+                    file_path = os.path.join(root, f)
+                    size = os.path.getsize(file_path)
+                    os.remove(file_path) # Borrar archivo
+                    bytes_liberados += size
+                except (PermissionError, OSError):
+                    pass # Si está en uso, lo saltamos silenciosamente
+            
+            for d in dirs:
+                try:
+                    dir_path = os.path.join(root, d)
+                    shutil.rmtree(dir_path) # Borrar subcarpeta completa
+                except (PermissionError, OSError):
+                    pass
+
+    mb_liberados = bytes_liberados / (1024 * 1024)
+    print(f"\n{Colors.GREEN}[SUCCESS] Limpieza completada.{Colors.ENDC}")
+    print(f"Espacio recuperado: {Colors.BOLD}{mb_liberados:.2f} MB{Colors.ENDC}")
+    
+    return f"Limpieza del sistema: {mb_liberados:.2f} MB liberados."
+
+def escaner_red_local():
+    """Escanea la red, recuerda dispositivos (historial) e inspecciona servicios web."""
+    log_output = "Iniciado Escáner de Red Local con Memoria e Inspección."
+    print(f"\n{Colors.MAGENTA}--- Escáner de Red Local (Memoria de Entorno) ---{Colors.ENDC}")
+    print("Consultando la red y comparando con registros históricos...")
+
+    # --- CARGAR MEMORIA HISTÓRICA ---
+    memoria_file = "memoria_red.json"
+    memoria = {}
+    if os.path.exists(memoria_file):
+        try:
+            with open(memoria_file, 'r', encoding='utf-8') as f:
+                memoria = json.load(f)
+        except: pass
+
+    try:
+        # Ejecutamos arp -a. Usamos latin-1 para evitar errores con tildes en Windows.
+        output = subprocess.check_output(['arp', '-a'], text=True, encoding='latin-1')
+        
+        dispositivos = []
+        lines = output.splitlines()
+        
+        # IPs a ignorar (Broadcast, Multicast)
+        ips_ignoradas = ["255.255.255.255"]
+        current_interface = ""
+        
+        for line in lines:
+            line = line.strip()
+            if not line: continue
+            
+            # Detectamos cabeceras de interfaz
+            if "Interfaz:" in line or "Interface:" in line:
+                current_interface = line
+                continue
+            
+            # Buscamos líneas con IP y MAC (formato simple)
+            parts = line.split()
+            if len(parts) >= 3:
+                ip = parts[0]
+                mac = parts[1]
+                tipo = parts[2]
+                # Filtro simple para asegurar que parece una IP y una MAC
+                
+                # Filtros de ruido y validación
+                if ip.count('.') == 3 and '-' in mac:
+                    # Ignorar multicast (224.x.x.x - 239.x.x.x) y broadcast
+                    octetos = ip.split('.')
+                    primer_octeto = int(octetos[0])
+                    if 224 <= primer_octeto <= 239 or ip in ips_ignoradas:
+                        continue
+                    
+                    # Identificar Gateway probable (termina en .1 o .254)
+                    es_gateway = ip.endswith(".1") or ip.endswith(".254")
+                    
+                    # --- GESTIÓN DE MEMORIA ---
+                    estado_historia = "NUEVO"
+                    fecha_visto = datetime.now().strftime("%Y-%m-%d %H:%M")
+                    
+                    if mac in memoria:
+                        estado_historia = f"Visto desde: {memoria[mac]['first_seen']}"
+                        memoria[mac]['last_seen'] = fecha_visto
+                    else:
+                        memoria[mac] = {'first_seen': fecha_visto, 'last_seen': fecha_visto}
+                        estado_historia = f"{Colors.GREEN}¡NUEVO HALLAZGO!{Colors.ENDC}"
+
+                    dispositivos.append({
+                        "ip": ip, 
+                        "mac": mac, 
+                        "tipo": tipo, 
+                        "interface": current_interface,
+                        "es_gateway": es_gateway,
+                        "historia": estado_historia
+                    })
+        
+        # Guardar memoria actualizada
+        with open(memoria_file, 'w', encoding='utf-8') as f:
+            json.dump(memoria, f, indent=4)
+
+        if not dispositivos:
+            print(f"{Colors.YELLOW}[INFO] No se encontraron dispositivos activos relevantes.{Colors.ENDC}")
+            return "Escáner de red: Sin resultados."
+
+        # Mostrar lista limpia
+        print(f"\n{Colors.CYAN}Dispositivos Detectados en el Entorno:{Colors.ENDC}")
+        print(f"{'#':<4}{'Dirección IP':<18}{'Dirección MAC':<20}{'Tipo':<10}{'Posible Rol'}")
+        print("-" * 75)
+        print(f"{'#':<4}{'Dirección IP':<16}{'Dirección MAC':<19}{'Historial / Estado'}")
+        print("-" * 80)
+        
+        for i, dev in enumerate(dispositivos):
+            rol = "Gateway/Router" if dev["es_gateway"] else "Dispositivo"
+            color_ip = Colors.GREEN if dev["es_gateway"] else Colors.BOLD
+            print(f"{i+1:<4}{color_ip}{dev['ip']:<18}{Colors.ENDC}{dev['mac']:<20}{dev['tipo']:<10}{rol}")
+            print(f"{i+1:<4}{color_ip}{dev['ip']:<16}{Colors.ENDC}{dev['mac']:<19}{dev['historia']}")
+
+        # --- FASE DE INSPECCIÓN ---
+        while True:
+            print(f"\n{Colors.MAGENTA}Opciones de Inteligencia:{Colors.ENDC}")
+            print("  Escribe el número de un dispositivo para INSPECCIONARLO (Puertos, Fabricante, Nombre).")
+            print("  O presiona Enter para volver al menú.")
+            
+            choice = input(">> ").strip()
+            if not choice.isdigit():
+                break
+            
+            idx = int(choice) - 1
+            if 0 <= idx < len(dispositivos):
+                target = dispositivos[idx]
+                ip_obj = target['ip']
+                mac_obj = target['mac']
+                
+                # Recuperar datos personalizados de la memoria (Tu Panel)
+                mem_data = memoria.get(mac_obj, {})
+                alias_guardado = mem_data.get('alias', 'N/A')
+                user_guardado = mem_data.get('user', 'N/A')
+                pass_guardado = mem_data.get('password', 'N/A')
+                port_guardado = mem_data.get('port', 'N/A')
+                notas_guardadas = mem_data.get('notes', 'N/A')
+                
+                print(f"\n{Colors.YELLOW}--- Analizando Objetivo: {ip_obj} ---{Colors.ENDC}")
+                
+                # 1. Resolución de Nombre (Hostname)
+                print("  [1/3] Resolviendo nombre de host...", end="", flush=True)
+                try:
+                    hostname = socket.gethostbyaddr(ip_obj)[0]
+                    print(f" {Colors.GREEN}OK: {hostname}{Colors.ENDC}")
+                except socket.herror:
+                    hostname = "Desconocido"
+                    print(f" {Colors.RED}No resuelto{Colors.ENDC}")
+
+                # 2. Identificación de Fabricante (MAC Vendor API)
+                print("  [2/3] Consultando fabricante (MAC)...", end="", flush=True)
+                vendor = "Desconocido"
+                try:
+                    # API pública simple para MACs
+                    mac_clean = mac_obj.replace('-', ':')
+                    resp = requests.get(f"https://api.macvendors.com/{mac_clean}", timeout=3)
+                    if resp.status_code == 200:
+                        vendor = resp.text
+                        print(f" {Colors.GREEN}OK: {vendor}{Colors.ENDC}")
+                    # Detectar MAC Aleatoria (Bit localmente administrado)
+                    # El segundo dígito hexadecimal suele ser 2, 6, A o E en MACs privadas.
+                    first_octet = int(mac_obj.split('-')[0], 16)
+                    is_local = (first_octet & 2) != 0
+                    
+                    if is_local:
+                        vendor = "MAC Privada / Aleatoria (Identidad Oculta)"
+                        print(f" {Colors.YELLOW}Privada{Colors.ENDC}")
+                    else:
+                        # API pública simple para MACs
+                        mac_clean = mac_obj.replace('-', ':')
+                        resp = requests.get(f"https://api.macvendors.com/{mac_clean}", timeout=3)
+                        if resp.status_code == 200:
+                            vendor = resp.text
+                            print(f" {Colors.GREEN}OK: {vendor}{Colors.ENDC}")
+                        else:
+                            print(f" {Colors.YELLOW}Sin datos{Colors.ENDC}")
+                except:
+                    print(f" {Colors.RED}Error conexión API{Colors.ENDC}")
+
+                # 3. Escaneo de Puertos (Riesgos y Servicios)
+                print("  [3/3] Escaneando puertos comunes...", end="", flush=True)
+                puertos_comunes = [21, 22, 80, 443, 445, 3389, 8080]
+                abiertos = []
+                try:
+                    for port in puertos_comunes:
+                        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                        sock.settimeout(0.5)
+                        result = sock.connect_ex((ip_obj, port))
+                        if result == 0:
+                            abiertos.append(port)
+                        sock.close()
+                    print(f" {Colors.GREEN}Completado{Colors.ENDC}")
+                except:
+                    print(" Error")
+
+                # --- REPORTE FINAL DEL OBJETIVO ---
+                print(f"\n{Colors.CYAN}╔══ REPORTE DE INTELIGENCIA: {ip_obj} ══╗{Colors.ENDC}")
+                print(f"║ {Colors.BOLD}Hostname:{Colors.ENDC}   {hostname}")
+                print(f"║ {Colors.BOLD}Fabricante:{Colors.ENDC} {vendor}")
+                print(f"║ {Colors.BOLD}MAC:{Colors.ENDC}        {mac_obj}")
+                print(f"║ {Colors.BOLD}Historial:{Colors.ENDC}   {target['historia']}")
+                print(f"║ {Colors.MAGENTA}--- TU PANEL PERSONAL ---{Colors.ENDC}")
+                print(f"║ {Colors.BOLD}Alias:{Colors.ENDC}        {alias_guardado}")
+                print(f"║ {Colors.BOLD}Usuario:{Colors.ENDC}      {user_guardado}")
+                print(f"║ {Colors.BOLD}Clave:{Colors.ENDC}         {pass_guardado}")
+                print(f"║ {Colors.BOLD}Puerto Mgmt:{Colors.ENDC}   {port_guardado}")
+                print(f"║ {Colors.BOLD}Notas:{Colors.ENDC}        {notas_guardadas}")
+                
+                urls_para_abrir = []
+                if abiertos:
+                    print(f"║ {Colors.BOLD}Puertos Abiertos:{Colors.ENDC}")
+                    for p in abiertos:
+                        desc = ""
+                        if p == 80 or p == 8080: desc = "(Web HTTP - Posible Panel de Control)"
+                        elif p == 443: desc = "(Web HTTPS - Seguro)"
+                        elif p == 22: desc = "(SSH - Acceso Remoto Linux)"
+                        elif p == 21: desc = "(FTP - Transferencia Archivos)"
+                        elif p == 445: desc = f"{Colors.RED}(SMB - Compartir Archivos Windows - ¡OJO!){Colors.ENDC}"
+                        elif p == 3389: desc = "(RDP - Escritorio Remoto Windows)"
+                        print(f"║   -> {Colors.GREEN}{p}{Colors.ENDC} {desc}")
+                        
+                        # --- INTERROGATORIO WEB PASIVO (NUEVO) ---
+                        if p in [80, 8080, 443]:
+                            try:
+                                protocol = "https" if p == 443 else "http"
+                                # Generamos link clickeable
+                                if p == 80: url_link = f"http://{ip_obj}"
+                                elif p == 443: url_link = f"https://{ip_obj}"
+                                else: url_link = f"{protocol}://{ip_obj}:{p}"
+                                
+                                urls_para_abrir.append(url_link)
+                                print(f"║      {Colors.CYAN}└─ [LINK ACCESO]:{Colors.ENDC} {Colors.BLUE}{Colors.BOLD}{url_link}{Colors.ENDC}")
+                                
+                                # Si hay un puerto guardado personalizado, lo añadimos también
+                                if port_guardado != 'N/A' and port_guardado.isdigit() and int(port_guardado) not in abiertos:
+                                    custom_url = f"http://{ip_obj}:{port_guardado}"
+                                    urls_para_abrir.append(custom_url)
+                                    print(f"║      {Colors.CYAN}└─ [LINK PERSONAL ({port_guardado})]:{Colors.ENDC} {Colors.BLUE}{Colors.BOLD}{custom_url}{Colors.ENDC}")
+                                
+                                url = f"{protocol}://{ip_obj}:{p}"
+                                # verify=False para evitar errores con certificados de routers
+                                r = requests.get(url, timeout=2, verify=False)
+                                server_header = r.headers.get('Server', 'Desconocido')
+                                soup = BeautifulSoup(r.text, 'html.parser')
+                                page_title = soup.title.string.strip() if soup.title else "Sin título"
+                                print(f"║      {Colors.CYAN}└─ [INFO WEB] Título:{Colors.ENDC} {page_title}")
+                                print(f"║      {Colors.CYAN}└─ [INFO WEB] Software:{Colors.ENDC} {server_header}")
+                                
+                                # --- EXTRACCIÓN DE DATOS TÉCNICOS (SCRAPING) ---
+                                # Buscamos patrones comunes en el texto de la página
+                                text_content = soup.get_text(separator=' ', strip=True)
+                                
+                                patrones = {
+                                    "Modelo": [r"Model[:\s]+([A-Za-z0-9\-\_]+)", r"Product Name[:\s]+([A-Za-z0-9\-\_]+)"],
+                                    "Fabricante": [r"Vendor[:\s]+([A-Za-z0-9\-\_]+)", r"Manufacturer[:\s]+([A-Za-z0-9\-\_]+)"],
+                                    "Serial": [r"Serial Number[:\s]+([A-Za-z0-9]+)"],
+                                    "Firmware": [r"Firmware Version[:\s]+([A-Za-z0-9\-\.\_]+)", r"Software Version[:\s]+([A-Za-z0-9\-\.\_]+)"],
+                                    "MAC Web": [r"MAC Address[:\s]+([0-9A-Fa-f\:\-]+)"]
+                                }
+                                
+                                datos_extraidos = []
+                                for key, regex_list in patrones.items():
+                                    for rx in regex_list:
+                                        match = re.search(rx, text_content, re.IGNORECASE)
+                                        if match:
+                                            val = match.group(1).strip()
+                                            datos_extraidos.append(f"{key}: {val}")
+                                            break # Si encontramos uno, pasamos al siguiente dato
+                                
+                                if datos_extraidos:
+                                    print(f"║      {Colors.GREEN}└─ [DATOS EXTRAÍDOS]:{Colors.ENDC} {', '.join(datos_extraidos)}")
+                                
+                                # --- BÚSQUEDA DE RUTAS DE GESTIÓN (APIs) ---
+                                rutas_comunes = ["/admin", "/login", "/api", "/setup", "/config", "/cgi-bin/", "/dashboard", "/user"]
+                                rutas_halladas = []
+                                for ruta in rutas_comunes:
+                                    try:
+                                        # Timeout corto para ser ágil y no colgar el escaneo
+                                        check = requests.get(f"{url}{ruta}", timeout=0.5, verify=False)
+                                        if check.status_code in [200, 401, 403]:
+                                            estado = "Abierto" if check.status_code == 200 else "Requiere Login"
+                                            rutas_halladas.append(f"{ruta} ({estado})")
+                                    except: pass
+                                
+                                if rutas_halladas:
+                                    print(f"║      {Colors.YELLOW}└─ [RUTAS GESTIÓN DETECTADAS]:{Colors.ENDC}")
+                                    for rh in rutas_halladas:
+                                        print(f"║         -> {rh}")
+                                
+                                # --- SUGERENCIA DE CREDENCIALES (AYUDA MEMORIA) ---
+                                print(f"║      {Colors.MAGENTA}└─ [POSIBLES CREDENCIALES (Prueba estas)]: {Colors.ENDC}")
+                                credenciales_comunes = [
+                                    "admin / admin", "admin / password", "admin / 1234",
+                                    "admin / (vacío)", "(vacío) / admin", "user / user",
+                                    "root / root", "admin / cisco", "cusadmin / password"
+                                ]
+                                for cred in credenciales_comunes:
+                                    print(f"║         -> {cred}")
+                            except:
+                                pass # Si falla, simplemente no mostramos nada extra
+                else:
+                    print(f"║ {Colors.YELLOW}No se detectaron puertos comunes abiertos (Dispositivo sigiloso o firewall activo).{Colors.ENDC}")
+                print(f"{Colors.CYAN}╚════════════════════════════════════════════╝{Colors.ENDC}")
+                
+                # --- MENÚ DE GESTIÓN DEL DISPOSITIVO ---
+                while True:
+                    print(f"\n{Colors.MAGENTA}Gestión del Dispositivo:{Colors.ENDC}")
+                    if urls_para_abrir:
+                        print(f"  [1] Abrir Panel de Control (Navegador)")
+                    print(f"  [2] {Colors.YELLOW}Editar Ficha (Alias, Usuario, Clave){Colors.ENDC}")
+                    print(f"  [0] Volver a la lista")
+                    
+                    accion = input(">> ").strip()
+                    
+                    if accion == '0':
+                        break
+                    
+                    elif accion == '1' and urls_para_abrir:
+                        if len(urls_para_abrir) == 1:
+                            webbrowser.open(urls_para_abrir[0])
+                        else:
+                            print("Elige cuál abrir:")
+                            for i, u in enumerate(urls_para_abrir):
+                                print(f"  [{i+1}] {u}")
+                            try:
+                                sel = int(input(">> ")) - 1
+                                if 0 <= sel < len(urls_para_abrir):
+                                    webbrowser.open(urls_para_abrir[sel])
+                            except: pass
+                            
+                    elif accion == '2':
+                        print(f"\n{Colors.CYAN}--- Editando Ficha Personal para {ip_obj} ---{Colors.ENDC}")
+                        print("Deja vacío para mantener el valor actual.")
+                        
+                        new_alias = input(f"Alias ({alias_guardado}): ").strip()
+                        new_user = input(f"Usuario ({user_guardado}): ").strip()
+                        new_pass = input(f"Clave ({pass_guardado}): ").strip()
+                        new_port = input(f"Puerto Mgmt ({port_guardado}): ").strip()
+                        new_notes = input(f"Notas ({notas_guardadas}): ").strip()
+                        
+                        if new_alias: mem_data['alias'] = new_alias
+                        if new_user: mem_data['user'] = new_user
+                        if new_pass: mem_data['password'] = new_pass
+                        if new_port: mem_data['port'] = new_port
+                        if new_notes: mem_data['notes'] = new_notes
+                        
+                        memoria[mac_obj] = mem_data
+                        # Guardar cambios en disco
+                        with open(memoria_file, 'w', encoding='utf-8') as f:
+                            json.dump(memoria, f, indent=4)
+                        
+                        # Actualizar variables locales
+                        alias_guardado = mem_data.get('alias', alias_guardado)
+                        user_guardado = mem_data.get('user', user_guardado)
+                        pass_guardado = mem_data.get('password', pass_guardado)
+                        port_guardado = mem_data.get('port', port_guardado)
+                        notas_guardadas = mem_data.get('notes', notas_guardadas)
+                        
+                        print(f"{Colors.GREEN}[SUCCESS] Ficha actualizada.{Colors.ENDC}")
+
+                log_output += f" | Inspeccionado {ip_obj}: {hostname}, {vendor}"
+
+            else:
+                print(f"{Colors.RED}[ERROR] Selección no válida.{Colors.ENDC}")
+
+    except Exception as e:
+        print(f"{Colors.RED}[ERROR] Fallo al escanear la red: {e}{Colors.ENDC}")
+        return f"Error en escáner de red: {e}"
+
+    return log_output
+
+def escaner_bluetooth():
+    """Lista los dispositivos Bluetooth detectados por el sistema."""
+    log_output = "Iniciado Escáner Bluetooth."
+    print(f"\n{Colors.MAGENTA}--- Escáner Bluetooth ---{Colors.ENDC}")
+    print(f"{Colors.YELLOW}Consultando controladores Bluetooth (Modo bajo consumo)...{Colors.ENDC}")
+
+    try:
+        # Usamos PowerShell para listar dispositivos Bluetooth conocidos por el sistema
+        cmd = "Get-PnpDevice -Class 'Bluetooth' | Select-Object Status, FriendlyName | Sort-Object Status"
+        output = subprocess.check_output(['powershell', '-Command', cmd], text=True, encoding='latin-1')
+        
+        lines = output.splitlines()
+        # Cabecera
+        print(f"\n{Colors.BOLD}{'Estado':<15}{'Nombre del Dispositivo'}{Colors.ENDC}")
+        print("-" * 60)
+        
+        found = False
+        for line in lines:
+            if "Status" in line or "----" in line or not line.strip():
+                continue
+            
+            # Separamos estado y nombre
+            parts = line.strip().split(None, 1)
+            if len(parts) == 2:
+                status, name = parts
+                # Colores según estado
+                color = Colors.GREEN if status == "OK" else Colors.RED
+                # Ajustamos padding considerando los caracteres invisibles de color
+                print(f"{color}{status:<15}{Colors.ENDC}{name}")
+                found = True
+        
+        if not found:
+            print(f"{Colors.YELLOW}[INFO] No se encontraron dispositivos Bluetooth.{Colors.ENDC}")
+
+    except Exception as e:
+        print(f"{Colors.RED}[ERROR] No se pudo escanear Bluetooth: {e}{Colors.ENDC}")
+        return f"Error Bluetooth: {e}"
+
+    return log_output
+
+def geolocalizacion_clima():
+    """Obtiene ubicación (Fusión IP + Sensores) y clima, analizando el entorno."""
+    log_output = "Consulta de Geolocalización Avanzada y Clima."
+    
+    def obtener_datos():
+        datos = {}
+        errores = []
+        
+        # --- 1. ANÁLISIS DE ENTORNO (TU IDEA: COMPARADOR DE EVENTOS) ---
+        entorno_digital = []
+        try:
+            # Detectar WiFi conectado (Ancla fuerte)
+            wifi_out = subprocess.check_output(['netsh', 'wlan', 'show', 'interfaces'], text=True, encoding='latin-1')
+            for line in wifi_out.splitlines():
+                if "SSID" in line and "BSSID" not in line:
+                    ssid = line.split(":", 1)[1].strip()
+                    if ssid: entorno_digital.append(f"WiFi: {ssid}")
+                    break
+        except: pass
+
+        try:
+            # Detectar densidad de Bluetooth (Ancla de proximidad)
+            bt_cmd = "Get-PnpDevice -Class 'Bluetooth' -Status 'OK' | Measure-Object | Select-Object -ExpandProperty Count"
+            bt_count = subprocess.check_output(['powershell', '-Command', bt_cmd], text=True, encoding='latin-1').strip()
+            if bt_count and bt_count.isdigit() and int(bt_count) > 0:
+                entorno_digital.append(f"Bluetooth: {bt_count} disp. activos")
+        except: pass
+
+        # --- 2. GEOLOCALIZACIÓN DE ALTA PRECISIÓN (WINDOWS) ---
+        lat_final, lon_final = None, None
+        fuente = "Triangulación IP (Básica)"
+        
+        # Intentamos usar la API de ubicación de Windows (simula GPS/Triangulación de antenas)
+        try:
+            ps_script = """
+            Add-Type -AssemblyName System.Device
+            $watcher = New-Object System.Device.Location.GeoCoordinateWatcher
+            $watcher.Start()
+            $start = Get-Date
+            while ($watcher.Status -ne 'Ready' -and ((Get-Date) - $start).TotalSeconds -lt 2) { Start-Sleep -Milliseconds 100 }
+            if ($watcher.Status -eq 'Ready') {
+                $loc = $watcher.Position.Location
+                if ($loc.Latitude -ne 'NaN') { Write-Output "$($loc.Latitude),$($loc.Longitude)" }
+            }
+            """
+            gps_out = subprocess.check_output(['powershell', '-Command', ps_script], text=True, encoding='latin-1').strip()
+            if ',' in gps_out:
+                lat_final, lon_final = map(float, gps_out.split(','))
+                fuente = f"Sensores Windows + {len(entorno_digital)} Ref. Entorno"
+        except: pass
+
+        # --- 3. GEOLOCALIZACIÓN IP (RESPALDO) ---
+        try:
+            geo_resp = requests.get('http://ip-api.com/json/', timeout=5)
+            geo_data = geo_resp.json()
+            
+            if geo_data.get('status') != 'success':
+                return None, None, "Fallo en geolocalización IP."
+
+            # Si Windows falló, usamos IP
+            if lat_final is None:
+                lat_final = geo_data['lat']
+                lon_final = geo_data['lon']
+            
+            ubicacion_str = f"{geo_data['city']}, {geo_data['country']}"
+            
+            # --- 4. CLIMA (CON COORDENADAS FINALES) ---
+            weather_url = f"https://api.open-meteo.com/v1/forecast?latitude={lat_final}&longitude={lon_final}&current_weather=true&timezone=auto"
+            weather_resp = requests.get(weather_url, timeout=5)
+            weather_data = weather_resp.json()
+            
+            clima = {}
+            if 'current_weather' in weather_data:
+                cw = weather_data['current_weather']
+                # Códigos WMO simplificados
+                code = cw['weathercode']
+                desc = "Despejado ☀️" if code == 0 else "Nublado ⛅" if code < 4 else "Lluvia/Nieve 🌧️" if code > 50 else "Niebla 🌫️"
+                clima = {'temp': cw['temperature'], 'wind': cw['windspeed'], 'desc': desc}
+
+            return {'loc': ubicacion_str, 'lat': lat_final, 'lon': lon_final, 'fuente': fuente, 'entorno': entorno_digital}, clima, None
+            
+        except Exception as e:
+            return None, None, str(e)
+
+    while True:
+        mostrar_encabezado()
+        print(f"\n{Colors.MAGENTA}--- Geolocalización: Fusión de Sensores ---{Colors.ENDC}")
+        print(f"{Colors.YELLOW}Comparando datos de GPS, WiFi y Bluetooth para máxima precisión...{Colors.ENDC}")
+        
+        datos, clima, err = obtener_datos()
+
+        if err:
+            print(f"{Colors.RED}[ERROR] {err}{Colors.ENDC}")
+        else:
+            print(f"\n{Colors.CYAN}📍 UBICACIÓN CONFIRMADA:{Colors.ENDC}")
+            print(f"   Zona:        {Colors.BOLD}{datos['loc']}{Colors.ENDC}")
+            print(f"   Coordenadas: {datos['lat']}, {datos['lon']}")
+            print(f"   Precisión:   {Colors.GREEN}{datos['fuente']}{Colors.ENDC}")
+            
+            if datos['entorno']:
+                print(f"\n{Colors.MAGENTA}🔗 ENTORNO DIGITAL (Confirmación de Proximidad):{Colors.ENDC}")
+                for item in datos['entorno']:
+                    print(f"   └─ {item}")
+            
+            print(f"\n{Colors.GREEN}☁️  CLIMA LOCAL:{Colors.ENDC}")
+            print(f"   {clima['desc']} | {clima['temp']} °C | Viento: {clima['wind']} km/h")
+            
+            if "Tormenta" in clima['desc'] or "Lluvia" in clima['desc'] or "Nieve" in clima['desc']:
+                print(f"\n{Colors.RED}⚠️  ALERTA: Condiciones climáticas adversas. Precaución.{Colors.ENDC}")
+            else:
+                print(f"\n{Colors.GREEN}✅ Sin alertas graves.{Colors.ENDC}")
+
+        print(f"\n{Colors.MAGENTA}Opciones:{Colors.ENDC}")
+        print("  1. Actualizar ahora")
+        print("  2. Programar ACTUALIZACIÓN AUTOMÁTICA (Modo Centinela)")
+        print("  0. Volver al menú")
+
+        choice = input("\n>> Elige una opción: ").strip()
+
+        if choice == '1':
+            continue 
+        elif choice == '2':
+            try:
+                intervalo = float(input(">> ¿Cada cuántos MINUTOS quieres actualizar? (ej: 60 para 1 hora): ").strip())
+                print(f"\n{Colors.GREEN}Iniciando Modo Centinela cada {intervalo} minutos.{Colors.ENDC}")
+                print(f"{Colors.YELLOW}Presiona Ctrl+C para detener el monitoreo.{Colors.ENDC}")
+                time.sleep(2)
+                try:
+                    while True:
+                        mostrar_encabezado()
+                        print(f"\n{Colors.MAGENTA}--- MODO CENTINELA (Actualizado: {datetime.now().strftime('%H:%M:%S')}) ---{Colors.ENDC}")
+                        datos, clima, err = obtener_datos()
+                        if not err:
+                            print(f"\n{Colors.CYAN}📍 {datos['loc']} ({datos['fuente']}){Colors.ENDC}")
+                            if datos['entorno']:
+                                print(f"   🔗 Entorno: {', '.join(datos['entorno'])}")
+                            print(f"{Colors.GREEN}☁️  {clima['desc']} | 🌡️ {clima['temp']}°C | 💨 {clima['wind']} km/h{Colors.ENDC}")
+                        print(f"\n{Colors.YELLOW}Próxima actualización en {intervalo} minutos... (Ctrl+C para salir){Colors.ENDC}")
+                        time.sleep(intervalo * 60)
+                except KeyboardInterrupt:
+                    print(f"\n{Colors.YELLOW}Monitoreo detenido.{Colors.ENDC}")
+                    time.sleep(1)
+            except ValueError:
+                print(f"{Colors.RED}[ERROR] Valor no válido.{Colors.ENDC}")
+                time.sleep(1)
+        elif choice == '0':
+            break
+            
+    return log_output
+
+def ver_mis_ips():
+    """Muestra la IP local, pública y detalles de interfaces."""
+    log_output = "Consulta de IPs e Interfaces."
+    print(f"\n{Colors.MAGENTA}--- Mis Direcciones IP e Interfaces ---{Colors.ENDC}")
+    
+    # 1. IP Pública
+    print(f"{Colors.YELLOW}Consultando IP Pública...{Colors.ENDC}")
+    try:
+        # Usamos un servicio simple de eco de IP
+        ip_publica = requests.get('https://api.ipify.org', timeout=5).text
+        print(f"  {Colors.BOLD}IP Pública (Internet):{Colors.ENDC} {Colors.CYAN}{ip_publica}{Colors.ENDC}")
+    except Exception:
+        print(f"  {Colors.RED}[ERROR] No se pudo obtener la IP Pública (¿tienes internet?).{Colors.ENDC}")
+
+    # 2. Interfaces Locales (Ethernet / WiFi)
+    print(f"\n{Colors.MAGENTA}--- Interfaces de Red Activas ---{Colors.ENDC}")
+    try:
+        # Obtenemos todas las interfaces
+        addrs = psutil.net_if_addrs()
+        stats = psutil.net_if_stats()
+        
+        for nic, addresses in addrs.items():
+            # Solo mostramos si la interfaz está "UP" (activa)
+            if nic in stats and stats[nic].isup:
+                print(f"\n  {Colors.BOLD}Interfaz: {nic}{Colors.ENDC}")
+                # Velocidad si está disponible
+                velocidad = stats[nic].speed
+                if velocidad > 0:
+                    print(f"    Velocidad: {velocidad} Mbps")
+                
+                for addr in addresses:
+                    if addr.family == socket.AF_INET: # IPv4
+                        print(f"    {Colors.GREEN}IPv4 Local: {addr.address}{Colors.ENDC}")
+                        print(f"    Máscara:    {addr.netmask}")
+                    elif addr.family == psutil.AF_LINK: # MAC
+                        print(f"    MAC:        {addr.address}")
+                        
+    except Exception as e:
+        print(f"{Colors.RED}[ERROR] al leer interfaces: {e}{Colors.ENDC}")
+
+    return log_output
+
 def mostrar_menu():
     """Muestra el menú de opciones numerado."""
     # --- Menú rediseñado en columnas para ser más compacto ---
@@ -1862,8 +2754,13 @@ def mostrar_menu():
         f"{Colors.GREEN}16. Cerebro Numérico{Colors.ENDC}",
         f"{Colors.CYAN}17. Ojo de Halcón{Colors.ENDC}",
         f"{Colors.BLUE}18. Gestionar Stock{Colors.ENDC}",
-        f"{Colors.YELLOW}19. Actualizar Programa{Colors.ENDC}",
-        f"{Colors.CYAN}20. Precios Referencia{Colors.ENDC}"
+        f"{Colors.YELLOW}19. Actualizar Programa{Colors.ENDC}", # Mantenemos actualizar cerca del final
+        f"{Colors.CYAN}20. Precios Referencia{Colors.ENDC}",
+        f"{Colors.RED}21. Limpieza Sistema{Colors.ENDC}",
+        f"{Colors.MAGENTA}22. Escáner Red Local{Colors.ENDC}",
+        f"{Colors.BLUE}23. Escáner Bluetooth{Colors.ENDC}",
+        f"{Colors.GREEN}24. Ver mis IPs{Colors.ENDC}",
+        f"{Colors.CYAN}25. Geo & Clima{Colors.ENDC}"
     ]
 
     # Imprimimos en formato de tabla
@@ -1946,7 +2843,7 @@ def menu_post_accion(opcion_actual, log_sesion):
             return str((int(opcion_actual) % 18) + 1) # Cicla a través de las opciones
         elif eleccion == 'g':
             guardar_reporte(log_sesion)
-        elif eleccion in [str(i) for i in range(1, 21)]: # Ampliar si hay más opciones
+        elif eleccion in [str(i) for i in range(1, 26)]: # Ampliar si hay más opciones
             return eleccion # Devuelve el número de la nueva opción a ejecutar
         else:
             print(f"{Colors.RED}[ERROR] Opción no reconocida.{Colors.ENDC}")
@@ -2044,6 +2941,26 @@ def iniciar_panel():
                 proxima_opcion = menu_post_accion(opcion, log_sesion)
             elif opcion == '20':
                 log = consultar_precios_referencia()
+                log_sesion.append(f"[{datetime.now().strftime('%H:%M:%S')}] {log}")
+                proxima_opcion = menu_post_accion(opcion, log_sesion)
+            elif opcion == '21':
+                log = limpieza_sistema()
+                log_sesion.append(f"[{datetime.now().strftime('%H:%M:%S')}] {log}")
+                proxima_opcion = menu_post_accion(opcion, log_sesion)
+            elif opcion == '22':
+                log = escaner_red_local()
+                log_sesion.append(f"[{datetime.now().strftime('%H:%M:%S')}] {log}")
+                proxima_opcion = menu_post_accion(opcion, log_sesion)
+            elif opcion == '23':
+                log = escaner_bluetooth()
+                log_sesion.append(f"[{datetime.now().strftime('%H:%M:%S')}] {log}")
+                proxima_opcion = menu_post_accion(opcion, log_sesion)
+            elif opcion == '24':
+                log = ver_mis_ips()
+                log_sesion.append(f"[{datetime.now().strftime('%H:%M:%S')}] {log}")
+                proxima_opcion = menu_post_accion(opcion, log_sesion)
+            elif opcion == '25':
+                log = geolocalizacion_clima()
                 log_sesion.append(f"[{datetime.now().strftime('%H:%M:%S')}] {log}")
                 proxima_opcion = menu_post_accion(opcion, log_sesion)
             elif opcion == '0':

@@ -1,0 +1,21 @@
+╔═════════════════════════════════════════╗
+║   REPORTE CONSOLIDADO - EL CEREBRO      ║
+╚═════════════════════════════════════════╝
+
+
+═══════════ SESIÓN GUARDADA EL 2025-12-21 a las 19:08:10 ═══════════
+[19:08:07] Iniciado Cerebro Numérico.
+  └─ Iniciada Calculadora por Artefactos.
+  └─ Cálculo por artefacto 'caja': 20 unidades -> $74.080,00
+
+
+═══════════ SESIÓN GUARDADA EL 2025-12-21 a las 19:08:23 ═══════════
+[19:08:07] Iniciado Cerebro Numérico.
+  └─ Iniciada Calculadora por Artefactos.
+  └─ Cálculo por artefacto 'caja': 20 unidades -> $74.080,00
+
+
+═══════════ SESIÓN GUARDADA EL 2025-12-21 a las 19:25:58 ═══════════
+[19:25:50] Iniciado Cerebro Numérico.
+  └─ Iniciada Calculadora por Artefactos.
+  └─ Proyecto 'caja': Artefactos=$201.000,00 + Cables=$211.000,00 = Total $412.000,00

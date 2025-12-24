@@ -1,5 +1,6 @@
 # componentes/modulo_admin.py
 import os
+import sys
 import json
 import shutil
 import hashlib
@@ -65,26 +66,43 @@ def ver_cronicas():
 
 def crear_punto_restauracion():
     """Crea un backup de los archivos .py actuales."""
+    # Verificar si estamos en modo ejecutable
+    if getattr(sys, 'frozen', False):
+        print(f"{Colors.YELLOW}[INFO] Los puntos de restauración no están disponibles en modo ejecutable.{Colors.ENDC}")
+        print(f"{Colors.CYAN}[SUGERENCIA] Usa la función de actualización (Opción 8 del menú principal) para obtener nuevas versiones.{Colors.ENDC}")
+        input("\n--- Presiona Enter para continuar ---")
+        return "Puntos de restauración no disponibles en .exe"
+    
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     nombre_backup = f"Snapshot_{timestamp}"
     ruta_backup = os.path.join(BACKUP_DIR, nombre_backup)
     
-    os.makedirs(ruta_backup)
-    
-    # Copiar archivos raíz (.py)
-    for f in os.listdir('.'):
-        if f.endswith('.py'):
-            shutil.copy(f, ruta_backup)
-    
-    # Copiar componentes
-    comp_dest = os.path.join(ruta_backup, "componentes")
-    os.makedirs(comp_dest)
-    for f in os.listdir('componentes'):
-        if f.endswith('.py'):
-            shutil.copy(os.path.join('componentes', f), comp_dest)
-            
-    registrar_cronica(f"Punto de restauración creado: {nombre_backup}")
-    print(f"{Colors.GREEN}[ÉXITO] Punto de restauración '{nombre_backup}' creado.{Colors.ENDC}")
+    try:
+        os.makedirs(ruta_backup)
+        
+        # Copiar archivos raíz (.py)
+        archivos_copiados = 0
+        for f in os.listdir('.'):
+            if f.endswith('.py'):
+                shutil.copy(f, ruta_backup)
+                archivos_copiados += 1
+        
+        # Copiar componentes si existe
+        if os.path.exists('componentes'):
+            comp_dest = os.path.join(ruta_backup, "componentes")
+            os.makedirs(comp_dest)
+            for f in os.listdir('componentes'):
+                if f.endswith('.py'):
+                    shutil.copy(os.path.join('componentes', f), comp_dest)
+                    archivos_copiados += 1
+        
+        registrar_cronica(f"Punto de restauración creado: {nombre_backup}")
+        print(f"{Colors.GREEN}[ÉXITO] Punto de restauración '{nombre_backup}' creado.{Colors.ENDC}")
+        print(f"{Colors.CYAN}[INFO] {archivos_copiados} archivos respaldados.{Colors.ENDC}")
+        return f"Snapshot creado: {nombre_backup}"
+    except Exception as e:
+        print(f"{Colors.RED}[ERROR] No se pudo crear el punto de restauración: {e}{Colors.ENDC}")
+        return f"Error al crear snapshot: {e}"
 
 def restaurar_sistema():
     """Permite volver a un punto de restauración anterior."""

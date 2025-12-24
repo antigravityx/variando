@@ -7,6 +7,7 @@ from datetime import datetime
 from .colores import Colors
 from .utilidades import input_con_mascara
 from .modulo_seguridad import registrar_remembranza, obtener_huella_digital
+from . import modulo_tickets
 
 BASE_DIR = "cronicas_director"
 BACKUP_DIR = os.path.join(BASE_DIR, "backups")
@@ -377,6 +378,7 @@ def menu_director():
         print(f"  5. {Colors.RED}{Colors.BOLD}Gestión de Lista Roja{Colors.ENDC} (Identidades Director)")
         print(f"  6. {Colors.BOLD}Ver Remembranzas{Colors.ENDC} (Auditoría de Acceso)")
         print(f"  7. {Colors.MAGENTA}{Colors.BOLD}Estrellas de Confianza{Colors.ENDC} (Vínculo Directo)")
+        print(f"  8. {Colors.YELLOW}{Colors.BOLD}Gestión de Tickets y Permisos{Colors.ENDC}")
         print(f"  {Colors.YELLOW}0. Volver al Panel de Control{Colors.ENDC}")
         
         choice = input("\n>> Orden del Amo: ").strip()
@@ -397,6 +399,8 @@ def menu_director():
             ver_remembranzas()
         elif choice == '7':
             gestionar_amistad_maestra()
+        elif choice == '8':
+            modulo_tickets.menu_gestion_tickets()
         elif choice == '0':
             break
         else:

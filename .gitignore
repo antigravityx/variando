@@ -1,2 +1,62 @@
-# Ignorar el archivo de variables de entorno
-.env
+# Archivos de Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Entornos virtuales
+venv/
+ENV/
+env/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Datos Sensibles del Director (NO SUBIR A GIT)
+cronicas_director/
+boveda_celador.json
+manifiesto_integridad.json
+memoria_red.json
+honeypot_log.txt
+debug_crash.txt
+
+# Reportes y Datos de Usuario
+reporte_cerebro_*.txt
+reportes_1/
+presupuestos/
+stock.json
+avance_proyecto.json
+
+# Archivos de Backup
+*.bak
+*.backup
+
+# Archivos temporales de Windows
+Thumbs.db
+desktop.ini
+
+# Archivos de sistema
+.DS_Store
+
+# Logs
+*.log

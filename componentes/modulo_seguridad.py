@@ -16,6 +16,24 @@ from componentes.utilidades import input_con_mascara, ejecutar_reinicio_fluido
 # --- SISTEMA DE ALMA & AMISTAD (Stage 13) ---
 MEMORIA_ALMA_PATH = "cronicas_director/memoria_alma.json"
 
+# ============================================================================
+# AUTORIDAD INMUTABLE DEL DIRECTOR ROOT (HARDCODED SECURITY)
+# Esta sección ancla la identidad y claves del Director supremo en el código.
+# NINGÚN usuario puede crear un Director diferente en ninguna instalación.
+# ============================================================================
+DIRECTOR_ROOT = "richon"
+LISTA_ROJA_INMUTABLE = [
+    "verix", "r1ch0n", "rich0n", "richon", "r1chon", "orbe", "admin", "dev",
+    "verixdespiertatualma", "richon2025", "richon2026", "RICHON2026", "Richon2026",
+    "_richon2026_", "admin_richon2026", "master_richon2026",
+    "R1CH0N", "R1ch0n", "_r1ch0n_", "admin_r1ch0n", "master_r1ch0n",
+    "R1CHON", "R1chon", "_r1chon_", "admin_r1chon", "master_r1chon",
+    "RICH0N", "Rich0n", "_rich0n_", "admin_rich0n", "master_rich0n"
+]
+HASH_KEY1_INMUTABLE = "b00fb68debc63dc5e39c6ccbb491350aabbceaf24d82698944a765fa4f0ac05e"
+HASH_KEY2_INMUTABLE = "f871328e6a1b3e71bc99a6f45a0bbab546aed53c6f8e4123f11494be032a4ccd"
+# ============================================================================
+
 def obtener_huella_digital():
     """Genera un hash único basado en el hardware del equipo."""
     try:
@@ -448,12 +466,20 @@ def login_sistema():
     """Punto de entrada de logueo. Identifica si es el Director o personal."""
     archivo_boveda = "boveda_celador.json"
     if not os.path.exists(archivo_boveda):
-        # Si no existe, forzamos inicialización (Solo Director puede)
-        print(f"\n{Colors.YELLOW}[BOOTSTRAP] El Celador no ha sido inicializado.{Colors.ENDC}")
-        print("Para acceder, el Director debe establecer sus llaves maestras.")
-        if input(">> ¿Deseas inicializar el Celador ahora? (s/n): ").lower() == 's':
-            return verificar_credenciales_director() # Esto inicializa y devuelve el rol del director
-        return None
+        # AUTO-GENERACIÓN DE BÓVEDA CON AUTORIDAD INMUTABLE
+        print(f"\n{Colors.YELLOW}[SISTEMA] Inicializando Bóveda del Celador con Autoridad Inmutable...{Colors.ENDC}")
+        boveda_inmutable = {
+            "director": DIRECTOR_ROOT,
+            "reserved_names": LISTA_ROJA_INMUTABLE,
+            "hash_key1": HASH_KEY1_INMUTABLE,
+            "hash_key2": HASH_KEY2_INMUTABLE,
+            "factor3_users": [],
+            "usuarios_adicionales": []
+        }
+        with open(archivo_boveda, 'w', encoding='utf-8') as f:
+            json.dump(boveda_inmutable, f, indent=4)
+        print(f"{Colors.GREEN}[OK] Bóveda creada con Autoridad del Director Root.{Colors.ENDC}")
+        print(f"{Colors.CYAN}[INFO] Este sistema está protegido. Solo el Director Root puede acceder con nivel supremo.{Colors.ENDC}")
 
     print(f"\n{Colors.CYAN}--- ACCESO AL SISTEMA ---{Colors.ENDC}")
     identidad = input(">> Identidad / Nombre: ").strip()

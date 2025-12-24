@@ -24,26 +24,49 @@ def _calcular_hash(filepath):
     except (IOError, PermissionError):
         return None
 
-def generar_manifiesto():
-    """Escanea los archivos .py y crea un manifiesto con sus hashes."""
-    print(f"\n{Colors.YELLOW}Generando nuevo manifiesto de integridad...{Colors.ENDC}")
-    manifesto = {}
-    # Incluimos el archivo principal y todos los módulos .py en componentes
+def generar_manifiesto(autorizado_por=None):
+    """Escanea los archivos .py y crea un manifiesto con sus hashes y el token de la cadena de confianza."""
+    print(f"\n{Colors.YELLOW}Generando nuevo manifiesto de integridad (Cadena de Confianza)...{Colors.ENDC}")
+    
+    # Cargar manifiesto anterior para obtener la firma previa
+    firma_previa = "GENESIS"
+    if os.path.exists(MANIFEST_FILE):
+        try:
+            with open(MANIFEST_FILE, 'r', encoding='utf-8') as f:
+                old_manifest = json.load(f)
+                firma_previa = old_manifest.get("firma_version", "GENESIS")
+        except: pass
+
+    manifesto = {
+        "files": {},
+        "metadata": {
+            "timestamp": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "autorizado_por": autorizado_por or "Iniciación",
+            "firma_previa": firma_previa
+        }
+    }
+    
+    # Escaneo de archivos
     files_to_check = glob.glob("*.py") + glob.glob(os.path.join("componentes", "*.py"))
     
     for filepath in files_to_check:
         file_hash = _calcular_hash(filepath)
         if file_hash:
-            manifesto[filepath] = file_hash
+            manifesto["files"][filepath] = file_hash
             print(f"  -> Firmando: {filepath} ({Colors.GREEN}OK{Colors.ENDC})")
         else:
             print(f"  -> Error al leer: {filepath} ({Colors.RED}FALLO{Colors.ENDC})")
 
+    # Forjar el nuevo Token de Versión (Blockchain-style)
+    # Token = Hash(Hashes_Archivos + Firma_Previa + Autoridad)
+    data_to_sign = json.dumps(manifesto["files"], sort_keys=True) + firma_previa + (autorizado_por or "Iniciación")
+    manifesto["firma_version"] = hashlib.sha256(data_to_sign.encode()).hexdigest()
+
     with open(MANIFEST_FILE, 'w', encoding='utf-8') as f:
         json.dump(manifesto, f, indent=4)
     
-    print(f"\n{Colors.GREEN}[SUCCESS] Manifiesto de integridad guardado en '{MANIFEST_FILE}'.{Colors.ENDC}")
-    return "Manifiesto de integridad generado."
+    print(f"\n{Colors.GREEN}[SUCCESS] Manifiesto de integridad guardado con firma: {manifesto['firma_version'][:16]}...{Colors.ENDC}")
+    return f"Manifiesto generado. Versión: {manifesto['firma_version'][:8]}"
 
 def verificar_integridad():
     """Verifica la integridad de los archivos contra el manifiesto."""
@@ -57,7 +80,13 @@ def verificar_integridad():
         return False
 
     with open(MANIFEST_FILE, 'r', encoding='utf-8') as f:
-        manifesto = json.load(f)
+        manifesto_data = json.load(f)
+
+    # Soporte para formato antiguo y nuevo
+    if "files" in manifesto_data:
+        manifesto = manifesto_data["files"]
+    else:
+        manifesto = manifesto_data
 
     comprometido = False
     for filepath, original_hash in manifesto.items():
@@ -85,10 +114,14 @@ def verificar_integridad():
         if opcion == 's':
             # Importación local para evitar dependencia circular
             from . import modulo_seguridad
-            if modulo_seguridad.verificar_credenciales_director():
-                print(f"\n{Colors.GREEN}[V] INTEGRACIÓN AUTORIZADA.{Colors.ENDC}")
-                generar_manifiesto()
+            session = modulo_seguridad.verificar_credenciales_director()
+            if session:
+                print(f"\n{Colors.GREEN}[V] INTEGRACIÓN AUTORIZADA POR {session['nombre']}.{Colors.ENDC}")
+                generar_manifiesto(autorizado_por=session['nombre'])
                 print(f"{Colors.CYAN}El escudo de integridad ha sido actualizado. Reiniciando secuencia...{Colors.ENDC}")
+                # Usar el nuevo reinicio fluido
+                from .utilidades import ejecutar_reinicio_fluido
+                ejecutar_reinicio_fluido()
                 return True
             else:
                 print(f"{Colors.RED}[!] AUTORIZACIÓN FALLIDA. El acceso sigue bloqueado.{Colors.ENDC}")

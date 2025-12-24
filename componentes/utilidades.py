@@ -2,6 +2,8 @@
 import msvcrt
 import sys
 import locale
+import os
+import subprocess
 from num2words import num2words
 
 from componentes.colores import Colors
@@ -66,3 +68,20 @@ def format_and_describe_number(number):
     palabras_decimales = num2words(parte_decimal, lang='es') if parte_decimal > 0 else "cero"
     descripcion = f"({palabras_enteras} con {palabras_decimales} centavos)"
     return formatted_number, descripcion
+
+def ejecutar_reinicio_fluido():
+    """Reinicia la aplicación de forma fluida, reemplazando el proceso actual."""
+    print(f"\n{Colors.CYAN}[SISTEMA] Iniciando refresco fluido del alma...{Colors.ENDC}")
+    
+    # Determinar si estamos en el ejecutable (.exe) o en el script (.py)
+    if getattr(sys, 'frozen', False):
+        # MODO EJECUTABLE
+        executable = sys.executable
+        script = f'timeout /t 1 /nobreak >nul & start "" "{executable}"'
+        subprocess.Popen(script, shell=True)
+        sys.exit(0)
+    else:
+        # MODO CÓDIGO FUENTE
+        executable = sys.executable
+        args = sys.argv[:]
+        os.execv(executable, [executable] + args)

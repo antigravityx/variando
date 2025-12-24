@@ -1,5 +1,6 @@
 @echo off
 setlocal enabledelayedexpansion
+cd /d "%~dp0"
 title EL CEREBRO - PROTOCOLO DE CONFIANZA
 color 0b
 
@@ -24,6 +25,20 @@ echo ======================================================
 echo   [SISTEMA] INICIANDO PROTOCOLO DE CONFIANZA ELITE
 echo   [MODO] INSTALACION Y DESBLOQUEO DE SEGURIDAD
 echo ======================================================
+echo.
+echo Este script configurara El Cerebro en tu sistema.
+echo No contiene codigo malicioso y solo realiza:
+echo  - Desbloqueo de seguridad de Windows (SmartScreen)
+echo  - Creacion de un acceso directo en el escritorio
+echo.
+set /p user_confirm=">> ¿Deseas autorizar la instalacion? (s/n): "
+if /i "!user_confirm!" neq "s" (
+    echo [INFO] Operacion cancelada por el usuario.
+    pause
+    exit
+)
+echo.
+echo [PROCESANDO...] Autorizacion concedida. Iniciando forja.
 echo.
 
 :: --- COMPROBACIÓN DE ARCHIVO ---

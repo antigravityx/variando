@@ -11,7 +11,7 @@ import platform
 import socket
 
 from componentes.colores import Colors
-from componentes.utilidades import input_con_mascara
+from componentes.utilidades import input_con_mascara, ejecutar_reinicio_fluido
 
 # --- SISTEMA DE ALMA & AMISTAD (Stage 13) ---
 MEMORIA_ALMA_PATH = "cronicas_director/memoria_alma.json"
@@ -736,7 +736,9 @@ def celador_de_llaves():
                     with open(archivo_boveda, 'w', encoding='utf-8') as f:
                         json.dump(nueva_boveda, f, indent=4)
                     print(f"{Colors.GREEN}[ÉXITO] Bóveda absorbida desde la cápsula '{os.path.basename(path_capsula)}'.{Colors.ENDC}")
-                    print("Es necesario reiniciar el Celador para aplicar los cambios.")
+                    print(f"{Colors.CYAN}El Celador se refresca automáticamente para aplicar los cambios...{Colors.ENDC}")
+                    time.sleep(2)
+                    ejecutar_reinicio_fluido()
                     return log_output
                 except Exception as e:
                     print(f"{Colors.RED}[ERROR] No se pudo absorber la cápsula: {e}{Colors.ENDC}")

@@ -1,0 +1,19 @@
+{
+    "test_admin.py": "9101080090cceb5da227516ccb279b81df2b11083ab192a87954efdee850759b",
+    "test_celador.py": "2fae523ba848c642d37b1eae6b52581203d928c7bc4a0aacf14281509167299e",
+    "test_rbac.py": "8aaecae1e338c32b595ea6b93f0356664d5570c416c8253bf5c0f8692fa50b84",
+    "test_security.py": "c20826bbea97c89a83221c2ef785003818c09282d824e44ce3a566b303dcb6bc",
+    "variando.py": "3a599b902fee6ff40a8beda21f1abb6484448b4671c01170810e7e2bd638ebd9",
+    "__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "componentes\\colores.py": "0c2d19907450109b70e7ee28c9f49d535f66a58ee785aee2af6a0ae9956d260a",
+    "componentes\\constantes.py": "bbc1a183b5e108c7444874aeb6f6befd268fd37c27fcb22bb35f2b2af4324493",
+    "componentes\\modulo_admin.py": "159b0a4fd699906e93edfeae4fd5824a24333494d5df6102cd78b3c8035b4cbc",
+    "componentes\\modulo_gestion.py": "e9b5840044507fceb7d9e512ecac3d5e032d00092d5d0acafda0d6a66db41240",
+    "componentes\\modulo_integridad.py": "b165218272df0035199c7d58446c92f0804c697d232ccbde0c2da2b6f6cb94f3",
+    "componentes\\modulo_proyectos.py": "78e9414b0f904f28e03905a393a2db5059f8cc684b3777ca587b877348e4780f",
+    "componentes\\modulo_red.py": "91b43ba850836caed391854ebe49085938afd2d3003c48e29a40b13a346db055",
+    "componentes\\modulo_seguridad.py": "2a628d0d220b81cd5b43e654ed33df0b79db2ce1c625c20221ce382ea28829e7",
+    "componentes\\modulo_sistema.py": "61eefc06ce7f373e97c4a0f3ac004e3ab5bfd1e0deb60992f601adf8ada64b2b",
+    "componentes\\utilidades.py": "1ae6df4f2b0207040d2b783f790e8e349ff2c89400bb867cd65ef5333273b660",
+    "componentes\\__init__.py": "44a7569351ffdeee67c589d8e80e0621b87f400d9b92ff67ff3c92fb9e0e6c60"
+}

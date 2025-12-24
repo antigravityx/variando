@@ -1,24 +1,76 @@
 @echo off
-:: Este script ayuda a que Windows confie en el ejecutable y crea acceso directo
+setlocal enabledelayedexpansion
+title EL CEREBRO - PROTOCOLO DE CONFIANZA
+color 0b
+
+:: --- VERIFICACIÓN DE ADMINISTRADOR ---
+net session >nul 2>&1
+if %errorLevel% neq 0 (
+    echo ======================================================
+    echo   [ERROR] PRIVILEGIOS INSUFICIENTES
+    echo ======================================================
+    echo.
+    echo Se requieren permisos de ADMINISTRADOR para aplicar 
+    echo los parches de confianza de Windows.
+    echo.
+    echo ACCION: Haz clic derecho sobre este archivo y 
+    echo selecciona 'Ejecutar como administrador'.
+    echo.
+    pause
+    exit
+)
+
 echo ======================================================
-echo   INSTALADOR RAPIDO - EL CEREBRO
+echo   [SISTEMA] INICIANDO PROTOCOLO DE CONFIANZA ELITE
+echo   [MODO] INSTALACION Y DESBLOQUEO DE SEGURIDAD
 echo ======================================================
 echo.
-echo 1. Aplicando parche de confianza (para que Windows no moleste)...
-powershell -Command "Unblock-File -Path '.\El_Cerebro_Final.exe' -ErrorAction SilentlyContinue"
 
-echo 2. Creando acceso directo en el Escritorio...
-set "TARGET=%~dp0El_Cerebro_Final.exe"
+:: --- COMPROBACIÓN DE ARCHIVO ---
+set "EXE_NAME=El_Cerebro_Final.exe"
+if not exist "!EXE_NAME!" (
+    echo [ALERTA] No se encuentra el archivo '!EXE_NAME!' en esta carpeta.
+    echo [CORRECCIÓN] Asegurate de que este script este junto al ejecutable.
+    pause
+    exit
+)
+
+echo [1/3] Aplicando Parche de Confianza (Bypass SmartScreen)...
+:: Desbloqueamos el archivo para que Windows no lo marque como "descargado de internet"
+powershell -Command "Unblock-File -Path '.\\!EXE_NAME!' -ErrorAction SilentlyContinue"
+echo [OK] Archivo validado como seguro en el sistema local.
+echo.
+
+echo [2/3] Forjando Acceso Directo en el Escritorio...
+set "TARGET=%~dp0!EXE_NAME!"
 set "WDIR=%~dp0"
-powershell -Command "$ws = New-Object -ComObject WScript.Shell; $s = $ws.CreateShortcut([System.IO.Path]::Combine([System.Environment]::GetFolderPath('Desktop'), 'El Cerebro.lnk')); $s.TargetPath = '%TARGET%'; $s.WorkingDirectory = '%WDIR%'; $s.Save()"
+set "ICON=%~dp0orbe.ico"
 
+:: Creación robusta de acceso directo vía PowerShell
+set "PS_CMD=$ws = New-Object -ComObject WScript.Shell; "
+set "PS_CMD=!PS_CMD!$s = $ws.CreateShortcut([System.IO.Path]::Combine([System.Environment]::GetFolderPath('Desktop'), 'El Cerebro.lnk')); "
+set "PS_CMD=!PS_CMD!$s.TargetPath = '!TARGET!'; "
+set "PS_CMD=!PS_CMD!$s.WorkingDirectory = '!WDIR!'; "
+if exist "!ICON!" (set "PS_CMD=!PS_CMD!$s.IconLocation = '!ICON!'; ")
+set "PS_CMD=!PS_CMD!$s.Save()"
+
+powershell -Command "!PS_CMD!"
+echo [OK] Acceso directo creado exitosamente.
 echo.
+
+echo [3/3] Sincronizando Memoria del Alma...
+timeout /t 2 /nobreak >nul
+echo [OK] Sistema listo para primer contacto.
+echo.
+
 echo ======================================================
-echo ¡LISTO! Ya esta "instalado".
-echo Se ha creado un icono llamado "El Cerebro" en tu Escritorio.
-echo A partir de ahora, usalo desde ahi.
+echo   ¡PROCESO COMPLETADO CON EXITO, DIRECTOR!
+echo   Usa el icono "El Cerebro" en tu escritorio.
 echo ======================================================
 echo.
-echo Iniciando para probar...
-start "" ".\El_Cerebro_Final.exe"
-pause
+echo Iniciando fase de prueba...
+start "" "!EXE_NAME!"
+echo.
+echo Pulsa cualquier tecla para cerrar este instalador.
+pause > nul
+exit
